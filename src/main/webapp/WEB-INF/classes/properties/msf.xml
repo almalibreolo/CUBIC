@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- Restful 기반 > Token 만료(단위: 분) -->
+	<entry key="setting.tokenExpiresTime">30</entry>
+
+	<!-- Directory -->
+	<entry key="file.directory">c:/msf</entry>
+	<entry key="file.excel">excel</entry>
+	<entry key="file.csv">csv</entry>
+	<entry key="file.image">image</entry>
+	<entry key="file.file">file</entry>
+	<entry key="file.temporary">temporary</entry>
+
+	<entry key="url.alarmManager">211.214.168.102:21810</entry>
+</properties>

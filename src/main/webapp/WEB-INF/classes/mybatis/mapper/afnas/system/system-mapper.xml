@@ -1,0 +1,70 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobigen.afnas.system.SystemMapper">
+
+	<select id="getAfnasSmCollectTime" resultType="java.util.Map">
+		SELECT
+			CLUSTER_NAME,
+			HOST_NAME,
+			COLLECT_TYPE,
+			DATE_FORMAT(UPDATE_TIME, '%Y-%c-%d %T') AS UPDATE_TIME
+		FROM afnas_sm_collect_time
+		ORDER BY UPDATE_TIME DESC
+	</select>
+
+	<select id="getAfnasSmProcess" resultType="java.util.Map">
+		SELECT
+			B.HOSTNAME,
+			B.STATUS AS STATUS,
+			DATE_FORMAT(B.UPDATE_DATE, '%Y-%c-%d %T') AS UPDATE_DATE,
+			A.PROCESS_NAME,
+			A.PROCESS_GROUP_NAME,
+			A.PROCESS_CHECK_KEY,
+			A.STATUS AS P_STATUS,
+			DATE_FORMAT(A.CREATE_DATE, '%Y-%c-%d %T') AS P_CREATE_DATE,
+			DATE_FORMAT(A.UPDATE_DATE, '%Y-%c-%d %T') AS P_UPDATE_DATE
+		FROM afnas_sm_process A,
+			afnas_sm_server_process_map B
+		WHERE A.PROCESS_ID = B.PROCESS_ID
+		ORDER BY B.UPDATE_DATE DESC
+	</select>
+
+	<select id="getAfnasSmProcessTopicInfo" resultType="java.util.Map">
+		SELECT
+			CLUSTER,
+			BROKER_LISTS,
+			TYPE,
+			TOPIC,
+			OFFSET,
+			DATE_FORMAT(UPDATE_DATE, '%Y-%c-%d %T') AS UPDATE_DATE
+		FROM afnas_sm_process_topic_info
+		ORDER BY UPDATE_DATE DESC
+	</select>
+
+	<select id="getAfnasSmServer" resultType="java.util.Map">
+		  SELECT
+			HOSTNAME,
+			IPADDRESS,
+			LOGIN_ID,
+			LOGIN_PASSWORD,
+			KEY_LOCATION,
+			STATUS,
+			DATE_FORMAT(CREATE_DATE, '%Y-%c-%d %T') AS CREATE_DATE,
+			DATE_FORMAT(UPDATE_DATE, '%Y-%c-%d %T') AS UPDATE_DATE
+		FROM afnas_sm_server
+		ORDER BY UPDATE_DATE DESC
+	</select>
+
+	<select id="getAfnasSmServerCheckInfo" resultType="java.util.Map">
+		SELECT
+			HOSTNAME,
+			CHECK_TYPE,
+			CHECK_INTERVAL
+		FROM afnas_sm_server_check_info
+		ORDER BY HOSTNAME
+	</select>
+
+</mapper>
+

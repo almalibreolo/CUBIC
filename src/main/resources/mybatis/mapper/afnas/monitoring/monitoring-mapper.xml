@@ -1,0 +1,122 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobigen.afnas.monitoring.MonitoringMapper">
+
+	<select id="getCmSystemProcess" resultType="CmSystemProcessModel">
+		SELECT
+			system_seq,
+			system_name,
+			process_seq,
+			process_name,
+			process_status,
+			running_time
+		FROM cm_system_process
+	</select>
+
+	<select id="getHmKafkaserverTopicStatus" resultType="HmKafkaserverTopicStatusModel">
+		SELECT COLLECT_TIME,
+			SYSTEM_NAME,
+			TOPIC,
+			BYTESINPERSEC,
+			BYTESOUTPERSEC,
+			BYTESREJECTEDPERSEC,
+			FAILEDFETCHREQUESTSPERSEC,
+			MESSAGESINPERSEC
+		FROM hm_kafkaserver_topic_status
+		WHERE COLLECT_TIME = (SELECT max(COLLECT_TIME) FROM hm_kafkaserver_topic_status)
+	</select>
+
+	<select id="getHmUiRequestHistoryCount" resultType="int">
+		SELECT count(*)
+		FROM hm_ui_request_history
+		WHERE REQUEST_DATE > DATE_ADD(NOW(), INTERVAL -1 HOUR)
+	</select>
+
+	<select id="getDBDiskUsage" resultType="long">
+		SELECT SUM(data_length+index_length) FROM information_schema.tables WHERE table_schema ='cubic'
+	</select>
+
+	<select id="getDBList" resultType="DBListModel">
+		SELECT
+			table_name,
+			table_rows,
+			ROUND(data_length/(1024*1024),2) AS 'DATA_SIZE_MB',
+			ROUND(index_length/(1024*1024),2) AS 'INDEX_SIZE_MB',
+			data_length AS 'DATA_SIZE',
+			index_length AS 'INDEX_SIZE'
+		FROM information_schema.TABLES
+		WHERE table_schema = 'afnas'
+		GROUP BY table_name
+		ORDER BY data_length DESC
+		LIMIT 10
+	</select>
+	
+	<select id="getSixHourKafkaData" resultType="HmKafkaserverMetricsModel">
+		SELECT
+			A.collect_time AS collect_time,
+			SUM(A.bytesinpersec) AS bytesinpersec,
+			SUM(A.bytesoutpersec) AS bytesoutpersec,
+			SUM(A.totalfetchrequestspersec) AS totalfetchrequestspersec,
+			SUM(A.totalproducerequestspersec) AS totalproducerequestspersec
+		FROM (SELECT
+			collect_time,
+			system_name,
+			bytesinpersec,
+			bytesoutpersec,
+			totalfetchrequestspersec,
+			totalproducerequestspersec
+		FROM hm_kafkaserver_metrics
+		WHERE collect_time > DATE_ADD(NOW(), INTERVAL -6 HOUR)) A
+		GROUP BY A.collect_time
+		ORDER BY A.collect_time
+	</select>
+	
+	<select id="getSixHourSystemData" resultType="HmSystemCpuModel">
+		SELECT
+			COLLECT_TIME,
+			SYSTEM_NAME,
+			PLUGIN_INSTANCE,
+			AVG(CPU_IDLE) AS CPU_IDLE,
+			(100 - IF(AVG(CPU_IDLE) > 100, 100, AVG(CPU_IDLE))) AS CPU_IDLE_CALC
+		FROM hm_system_cpu_1m
+		WHERE COLLECT_TIME > DATE_ADD(NOW(), INTERVAL -6 HOUR)
+		GROUP BY COLLECT_TIME, SYSTEM_NAME
+		ORDER BY COLLECT_TIME
+	</select>
+
+	<select id="getSixHourMemoryData" resultType="HmSystemMemoryModel">
+		SELECT
+			COLLECT_TIME,
+			SYSTEM_NAME,
+			MEMORY_USED / (MEMORY_USED + MEMORY_BUFFERED + MEMORY_CACHED + MEMORY_FREE) * 100 AS MEMORY_USED_PCT
+		FROM hm_system_memory_1m
+		WHERE COLLECT_TIME > DATE_ADD(NOW(), INTERVAL -6 HOUR)
+		ORDER BY COLLECT_TIME, SYSTEM_NAME
+	</select>
+
+	<select id="getSixHourNetworkData" resultType="HmSystemNetworkModel">
+		SELECT
+			COLLECT_TIME,
+			SYSTEM_NAME,
+			IF_OCTETS_RX,
+			IF_OCTETS_TX
+		FROM hm_system_network_1m
+		WHERE COLLECT_TIME > DATE_ADD(NOW(), INTERVAL -6 HOUR)
+		ORDER BY COLLECT_TIME, SYSTEM_NAME
+	</select>
+
+	<select id="getSixHourDiskData" resultType="HmSystemDiskfreeModel">
+		SELECT
+			COLLECT_TIME,
+			SYSTEM_NAME,
+			DF_USED
+		FROM hm_system_diskfree_1m
+		WHERE COLLECT_TIME > DATE_ADD(NOW(), INTERVAL -6 HOUR)
+			AND PLUGIN_INSTANCE = 'df-sum'
+		ORDER BY COLLECT_TIME, SYSTEM_NAME
+	</select>
+	
+</mapper>
+

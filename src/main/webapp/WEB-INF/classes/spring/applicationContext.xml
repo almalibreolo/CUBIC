@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	 xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:websocket="http://www.springframework.org/schema/websocket" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		   http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+		   http://www.springframework.org/schema/context/spring-context.xsd
+		   http://www.springframework.org/schema/util
+		   http://www.springframework.org/schema/util/spring-util.xsd
+		   http://www.springframework.org/schema/mvc
+		   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		   http://www.springframework.org/schema/aop
+		   http://www.springframework.org/schema/aop/spring-aop.xsd
+		   http://www.springframework.org/schema/websocket 
+		   http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		   http://www.springframework.org/schema/task 
+		   http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<!-- servlet-mapping의 url-pattern이 '/' 라면 반드시 필요 -->
+	<mvc:default-servlet-handler />
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=utf-8</value>
+					</list>
+				</property>
+			</bean>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		</mvc:message-converters>
+
+		<mvc:path-matching registered-suffixes-only="true" />
+	</mvc:annotation-driven>
+	<context:annotation-config />
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/dashboard/**"/>
+			<mvc:mapping path="/alarm/**"/>
+			<mvc:mapping path="/monitoring/**"/>
+			<bean id="commonInterceptor" class="com.mobigen.afnas.common.interceptor.CommonInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Ajax Result -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="order" value="0" />
+	</bean>
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+	</bean>
+
+	<!-- FileUpload/Download -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<!-- Tiles configuration -->
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles-definitions.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Web-Socket -->
+	<websocket:handlers>
+		<websocket:mapping path="/msf/websocket-sample" handler="websocketEndPoint" />
+	</websocket:handlers>
+	<bean id="websocketEndPoint" class="com.mobigen.msf.websocket.WebSocketEndPoint" />
+	<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+		<property name="maxTextMessageBufferSize" value="8192" />
+		<property name="maxBinaryMessageBufferSize" value="8192" />
+	</bean>
+
+	<!-- Async -->
+	<task:executor id="asyncExecutor" pool-size="100-1000" queue-capacity="1000" rejection-policy="ABORT" />
+	<task:annotation-driven executor="asyncExecutor" />
+
+	<!-- Resource -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- MessageSource -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:/messages/validation</value>
+				<value>classpath:/messages/exception</value>
+				<value>classpath:/properties/msf</value>
+			</list>
+		</property>
+		<property name="cacheSeconds">
+			<value>60</value>
+		</property>
+	</bean>
+	<bean id="messageSourceAccessor" name="messageSourceAccessor" class="org.springframework.context.support.MessageSourceAccessor">
+		<constructor-arg ref="messageSource" />
+	</bean>
+
+	<!-- Auto Scan -->
+	<context:component-scan base-package="com.mobigen" />
+
+	<!-- Enable AspectJ style of Spring AOP -->
+	<aop:aspectj-autoproxy />
+	<bean id="controllerThrowAdvice" class="com.mobigen.framework.exception.ControllerThrowAdvice" />
+
+	<!-- AlarmSyncManager -->
+	<bean id="alarmManager" class="com.mobigen.afnas.common.AlarmManager" />
+
+</beans>

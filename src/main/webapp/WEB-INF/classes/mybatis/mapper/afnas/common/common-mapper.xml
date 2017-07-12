@@ -1,0 +1,141 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobigen.afnas.common.CommonMapper">
+
+	<select id="getRequestHistory" resultType="RequestModel">
+		SELECT REQUEST_SEQ, REQUEST_USER, REQUEST_DATE, REQUEST_DATA
+		FROM hm_ui_request_history
+	</select>
+
+	<insert id="setRequestHistory" parameterType="RequestModel">
+		INSERT INTO hm_ui_request_history (REQUEST_USER, REQUEST_DATE, REQUEST_DATA)
+		VALUES (#{requestUser}, SYSDATE(), #{requestData})
+	</insert>
+
+	<select id="getStatusServiceList" parameterType="ServiceRequestModel" resultType="ServiceModel">
+		SELECT
+			INFO.*,
+			STATUS_SERVICE.HOST_NAME,
+			STATUS_SERVICE.CONNECTION_COUNT,
+			STATUS_VOLUME.VOLUME_TYPE,
+			STATUS_VOLUME.REPLICA_STATE,
+			STATUS_VOLUME.USABLE_CAPACITY,
+			STATUS_VOLUME.USED_CAPACITY,
+			STATUS_VOLUME.BRICKCOUNT,
+			STATUS_VOLUME.ARBITERCOUNT,
+			STATUS_VOLUME.DISPERSECOUNT,
+			STATUS_VOLUME.REDUNDANCYCOUNT,
+			STATUS_VOLUME.REPLICACOUNT,
+			STATUS_VOLUME.SNAPSHOT_COUNT,
+			STATUS_VOLUME.NUM_CLIENTS,
+			STATUS_VOLUME.NUM_CONNECTIONS
+		FROM
+			(SELECT
+				A.system_group_id,
+				A.system_group, A.equip_type, A.system_id, A.system_name, A.equip_ip,
+				B.SHARES_NAME AS SERVICE_NAME, B.SERVICE_ID, B.SERVICE_TYPE, B.GF_VOLUME, B.DEL_FLAG AS SERVICE_DEL_FLAG,
+				C.VOLUME_NAME, C.DEL_FLAG AS VOLUME_DEL_FLAG
+			FROM
+				(SELECT
+					S.system_parent_seq AS system_group_id,
+					(SELECT system_name FROM cm_system WHERE system_seq = S.system_parent_seq LIMIT 1) AS system_group,
+					SI.equip_type,
+					S.system_seq AS system_id,
+					S.system_name,
+					S.system_ip AS equip_ip,
+					S.use_flag
+				FROM cm_system S, cm_system_info SI
+				WHERE S.system_seq = SI.system_seq
+				) A
+				JOIN cm_shares_info B ON A.system_group = B.CLUSTER_NAME
+				JOIN cm_gfs_volume_info C ON B.GF_VOLUME = C.VOLUME_NAME
+			WHERE A.use_flag = 'Y'
+				<if test="serviceName != null and serviceName != ''">
+					AND B.SHARES_NAME = #{serviceName}
+				</if>
+				<if test="gfVolume != null and gfVolume != ''">
+					AND B.GF_VOLUME = #{gfVolume}
+				</if>
+				<if test="volumeName != null and volumeName != ''">
+					AND C.VOLUME_NAME = #{volumeName}
+				</if>
+			GROUP BY B.SHARES_NAME) INFO
+			LEFT JOIN sm_connection_status STATUS_SERVICE ON INFO.SERVICE_NAME = STATUS_SERVICE.SHARES_NAME
+			LEFT JOIN sm_gfs_volume_status STATUS_VOLUME ON INFO.GF_VOLUME = STATUS_VOLUME.VOLUME_NAME
+		GROUP BY INFO.SERVICE_NAME
+	</select>
+
+	<select id="getStatusVolumeList" parameterType="ServiceRequestModel" resultType="ServiceModel">
+		SELECT
+			INFO.*,
+			VOLUME_STATUS.VOLUME_TYPE,
+			VOLUME_STATUS.REPLICA_STATE,
+			VOLUME_STATUS.USABLE_CAPACITY,
+			VOLUME_STATUS.USED_CAPACITY,
+			VOLUME_STATUS.BRICKCOUNT,
+			VOLUME_STATUS.ARBITERCOUNT,
+			VOLUME_STATUS.DISPERSECOUNT,
+			VOLUME_STATUS.REDUNDANCYCOUNT,
+			VOLUME_STATUS.REPLICACOUNT,
+			VOLUME_STATUS.SNAPSHOT_COUNT,
+			VOLUME_STATUS.NUM_CLIENTS,
+			VOLUME_STATUS.NUM_CONNECTIONS
+		FROM
+			(SELECT
+				A.system_group_id,
+				A.system_group, A.equip_type, A.system_id, A.system_name, A.equip_ip,
+				B.SHARES_NAME AS SERVICE_NAME, B.SERVICE_ID, B.SERVICE_TYPE, B.GF_VOLUME, B.DEL_FLAG AS SERVICE_DEL_FLAG,
+				C.VOLUME_NAME, C.DEL_FLAG AS VOLUME_DEL_FLAG
+			FROM
+				(SELECT
+					S.system_parent_seq AS system_group_id,
+					(SELECT system_name FROM cm_system WHERE system_seq = S.system_parent_seq LIMIT 1) AS system_group,
+					SI.equip_type,
+					S.system_seq AS system_id,
+					S.system_name,
+					S.system_ip AS equip_ip,
+					S.use_flag
+				FROM cm_system S, cm_system_info SI
+				WHERE S.system_seq = SI.system_seq
+				) A
+				JOIN cm_shares_info B ON A.system_group = B.CLUSTER_NAME
+				JOIN cm_gfs_volume_info C ON B.GF_VOLUME = C.VOLUME_NAME
+			WHERE A.use_flag = 'Y'
+				AND B.SERVICE_TYPE = 'NATIVE'
+				<if test="serviceName != null and serviceName != ''">
+					AND B.SHARES_NAME = #{serviceName}
+				</if>
+				<if test="gfVolume != null and gfVolume != ''">
+					AND B.GF_VOLUME = #{gfVolume}
+				</if>
+				<if test="volumeName != null and volumeName != ''">
+					AND C.VOLUME_NAME = #{volumeName}
+				</if>
+			GROUP BY C.VOLUME_NAME) INFO,
+			sm_gfs_volume_status VOLUME_STATUS
+		WHERE VOLUME_STATUS.VOLUME_NAME = INFO.VOLUME_NAME
+	</select>
+
+	<select id="getSysStatusUsageConfig" resultType="HostModel">
+-- 		SELECT HOST_NAME,
+-- 			COLLECT_TIME,
+-- 			SUMMARY
+-- 		FROM afnas.sys_status_usage_config
+-- 		ORDER BY HOST_NAME
+
+		SELECT
+			collect_time,
+			system_name AS host_name,
+			ROUND(cpu_usage, 2) AS cpu_usage,
+			ROUND(mem_usage, 2) AS mem_usage,
+			ROUND(df_used, 2) AS df_used,
+			ROUND(df_free, 2) AS df_free,
+			ROUND(df_total, 2) AS df_total,
+			ROUND(bytes_in, 2) AS bytes_in,
+			ROUND(bytes_out, 2) AS bytes_out
+		FROM sm_system_status
+	</select>
+
+</mapper>

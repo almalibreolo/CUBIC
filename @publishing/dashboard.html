@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>CUBIC</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="css/common.css" rel="stylesheet" type="text/css" />
+	<link href="css/layout_top.css" rel="stylesheet" type="text/css" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<header>
+		<h1 class="fl"><span>CUBIC</span></h1>
+		<nav class="mu-gnb fl">
+			<ul class="mu-hMenu fl">
+				<li class="active"><a href="#"><span>Dashboard</span></a></li>
+				<li><a href="#"><span>Resources</span></a></li>
+				<li><a href="#"><span>Alerts</span></a></li>
+				<li><a href="#"><span>Analytics</span></a></li>
+				<li><a href="#"><span>Reports</span></a></li>
+				<li><a href="#"><span>System Management</span></a></li>
+			</ul>
+			<div class="mu-topMenu fr">
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon bell"></i><span class="mu-badge">999</span></button>
+				<div class="mu-tooltip bottom">
+					<div class="arrow"></div>
+					<ul class="mu-list">
+						<li class="critical">
+							<span class="remark"></span>
+							<span class="tit">Critical</span>
+							<span class="num">9</span>
+						</li>
+						<li class="major">
+							<span class="remark"></span>
+							<span class="tit">Major</span>
+							<span class="num">999</span>
+						</li>
+						<li class="minor">
+							<span class="remark"></span>
+							<span class="tit">Minor</span>
+							<span class="num">999</span>
+						</li>
+					</ul>
+				</div>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon setting"></i>Settings</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon question"></i>Support</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon user"></i>admin</button>
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon logout"></i></button>
+			</div>
+		</nav>
+	</header>
+	<div class="mu-container">
+		<section>
+
+			<div class="mu-row mu-row-status">
+				<!-- Status -->
+				<div class="mu-col mu-col-status">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Status</span>
+							<div class="mu-item-group fr">
+								<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon play"></i></button>
+								<!--<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon pause"></i></button>-->
+								<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon repeat"></i></button>
+								<span class="update">Last Update <strong>2016/10/31 20:30:10</strong></span>
+							</div>
+						</div>
+						<div class="mu-panel-body">
+							<div class="status-wrap">
+								<ul>
+									<li class="stat-service">
+										<dl>
+											<dt>
+												<span class="mu-title">Service</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="normal">
+													<span class="title">Normal</span>
+													<span class="num">800</span>
+												</div>
+												<div class="abnormal">
+													<span class="title">Abnormal</span>
+													<span class="num">800</span>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li class="stat-volume">
+										<dl>
+											<dt>
+												<span class="mu-title">Volume</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="normal">
+													<span class="title">Normal</span>
+													<span class="num">8</span>
+												</div>
+												<div class="abnormal">
+													<span class="title">Abnormal</span>
+													<span class="num">800</span>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li class="stat-host">
+										<dl>
+											<dt>
+												<span class="mu-title">Node</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="normal">
+													<span class="title">Normal</span>
+													<span class="num">800</span>
+												</div>
+												<div class="abnormal">
+													<span class="title">Abnormal</span>
+													<span class="num">800</span>
+												</div>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+							</div>
+							<div class="info-wrap">
+								<ul>
+									<li class="info-size">
+										<dl>
+											<dt>
+												<span class="mu-title">Size</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="mu-progress">
+													<div class="mu-pbar current" style="width:60%">
+														<span class="c-num">600</span>
+														<span>Current</span>
+													</div>
+													<div class="mu-pbar max" style="width:80%">
+														<span>Max</span>
+													</div>
+													<div class="mu-pbar total" style="width:100%">
+														<span class="t-num">1000</span>
+														<span class="unit">GB</span>
+														<span>Total</span>
+													</div>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li class="info-connection">
+										<dl>
+											<dt>
+												<span class="mu-title">Connection</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="mu-progress">
+													<div class="mu-pbar current" style="width:60%">
+														<span class="c-num">600</span>
+														<span>Current</span>
+													</div>
+													<div class="mu-pbar total" style="width:100%">
+														<span class="t-num">1000</span>
+														<span>Max</span>
+													</div>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li class="info-throughtput">
+										<dl>
+											<dt>
+												<span class="mu-title">Throughtput</span>
+												<i class="mu-iocn-img"></i>
+											</dt>
+											<dd>
+												<div class="mu-progress">
+													<div class="mu-pbar current" style="width:60%">
+														<span class="c-num">600</span>
+														<span>Current</span>
+													</div>
+													<div class="mu-pbar total" style="width:100%">
+														<span class="t-num">1000</span>
+														<span class="unit">MB/s</span>
+														<span>Max</span>
+													</div>
+												</div>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Status -->
+			</div>
+
+			<div class="mu-row">
+				<!-- Service -->
+				<div class="mu-col mu-col-service mu-splitter-wrap vertical">
+
+					<div class="mu-panel mu-panel-service mu-splitter-first">
+						<div class="mu-panel-head">
+							<span class="mu-title">Service</span>
+							<div class="mu-item-group fr">
+								<div class="mu-btn-group">
+									<button type="button" class="mu-btn active">Severity</button>
+									<button type="button" class="mu-btn">Usage</button>
+								</div>
+								<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon grid"></i></button>
+								<!--<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon disk"></i></button>-->
+							</div>
+						</div>
+						<div class="mu-panel-body">
+							<div class="service-wrap mu-scroll-v">
+								<div class="service-box normal"><!-- normal -->
+									<div class="mu-title">Normal</div><!-- 상태별 첫번째에 타이틀 추가 -->
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box normal active"><!-- 선택시 active 추가 -->
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+
+								<div class="service-box critical focus"><!-- critical -->
+									<div class="mu-title">Critical</div><!-- 상태별 첫번째에 타이틀 추가 -->
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box critical">
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box critical">
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+
+								<div class="service-box major"><!-- major -->
+									<div class="mu-title">Major</div><!-- 상태별 첫번째에 타이틀 추가 -->
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box major">
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+
+								<div class="service-box minor"><!-- minor -->
+									<div class="mu-title">Minor</div><!-- 상태별 첫번째에 타이틀 추가 -->
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box minor">
+									<div class="mu-title">Minor</div>
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="service-box minor">
+									<div class="mu-title">Minor</div>
+									<div class="service-stat"></div>
+									<div class="service-info">
+										<span class="mu-title">Service 1<br>SMB</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="mu-splitter"></div>
+
+					<!-- Alarm -->
+					<div class="mu-panel mu-panel-alarm mu-splitter-last">
+						<div class="mu-panel-head">
+							<span class="mu-title">Alarm</span>
+						</div>
+						<div class="mu-panel-body">
+							<div class="mu-grid-scroll mu-grid-border">
+								<table class="mu-grid mu-grid-sort">
+									<colgroup>
+										<col width="80">
+										<col width="140">
+										<col width="110">
+										<col>
+										<col width="100">
+										<col width="17"><!-- scroll bar width -->
+									</colgroup>
+									<thead>
+										<tr>
+											<th class="none">Severity</th>
+											<th class="">Occured Time</th><!-- up, down -->
+											<th class="none">Alarm Name</th>
+											<th class="none">Rocation</th>
+											<th class="none"></th>
+											<th class="none"></th><!-- scroll bar width -->
+										</tr>
+									</thead>
+								</table>
+								<div class="mu-scroll-v">
+									<table class="mu-grid">
+										<colgroup>
+											<col width="80">
+											<col width="140">
+											<col width="110">
+											<col>
+											<col width="100">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td><span class="stat critical"></span></td>
+												<td>2016-08-31 12:30:00</td>
+												<td>gluster-vol04</td>
+												<td class="tl">001-01, test_openstack1</td>
+												<td>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon trash"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+												</td>
+											</tr>
+											<tr>
+												<td><span class="stat normal"></span></td>
+												<td>2016-08-31 12:30:00</td>
+												<td>gluster-vol04</td>
+												<td class="tl">001-01, test_openstack1</td>
+												<td>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon trash"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+												</td>
+											</tr>
+											<tr>
+												<td><span class="stat major"></span></td>
+												<td>2016-08-31 12:30:00</td>
+												<td>gluster-vol04</td>
+												<td class="tl">001-01, test_openstack1</td>
+												<td>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon trash"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+												</td>
+											</tr>
+											<tr>
+												<td><span class="stat minor"></span></td>
+												<td>2016-08-31 12:30:00</td>
+												<td>gluster-vol04</td>
+												<td class="tl">001-01, test_openstack1</td>
+												<td>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon trash"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+												</td>
+											</tr>
+											<tr>
+												<td></td>
+												<td>2016-08-31 12:30:00</td>
+												<td>gluster-vol04</td>
+												<td class="tl">001-01, test_openstack1</td>
+												<td>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon trash"></i></button>
+													<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- //Alarm -->
+
+				</div>
+				<!-- //Service -->
+
+				<!-- Volume -->
+				<div class="mu-col mu-col-volume">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Volume</span>
+						</div>
+						<div class="mu-panel-body">
+							<div class="volume-wrap mu-scroll-v">
+								<div class="disk-box normal active"><!-- normal -->
+									<div class="disk-set">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span class="used"></span><!-- used 추가-->
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+									</div>
+									<div class="disk-info">
+										<span class="mu-title">Vol 01</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="disk-box critical focus"><!-- critical -->
+									<div class="disk-set">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+									</div>
+									<div class="disk-info">
+										<span class="mu-title">Vol 02</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="disk-box major"><!-- major -->
+									<div class="disk-set">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+									</div>
+									<div class="disk-info">
+										<span class="mu-title">Vol 03</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="disk-box minor"><!-- minor -->
+									<div class="disk-set">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+										<span class="used"></span>
+									</div>
+									<div class="disk-info">
+										<span class="mu-title">Vol 04</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+								<div class="disk-box">
+									<div class="disk-set">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
+									</div>
+									<div class="disk-info">
+										<span class="mu-title">Vol 05</span>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-share"><i class="mu-icon search-plus"></i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Volume -->
+
+				<!-- Host -->
+				<div class="mu-col mu-col-host">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Host</span>
+						</div>
+						<div class="mu-panel-body mu-splitter-wrap vertical">
+							<div class="host-wrap mu-splitter-first">
+								<ul>
+									<li>
+										<span class="stat normal"></span>
+										<span class="mu-title">AFNAS01</span>
+									</li>
+									<li class="active">
+										<span class="stat critical"></span>
+										<span class="mu-title">AFNAS02</span>
+									</li>
+									<li class="focus">
+										<span class="stat major"></span>
+										<span class="mu-title">AFNAS03</span>
+									</li>
+									<li>
+										<span class="stat minor"></span>
+										<span class="mu-title">AFNAS04</span>
+									</li>
+									<li>
+										<span class="stat normal"></span>
+										<span class="mu-title">AFNAS01</span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="mu-splitter"></div>
+
+							<div class="host-info mu-splitter-last">
+								<div class="host-list mu-scroll-v">
+									<ul>
+										<li><a href="#host01">AFNAS01</a></li>
+										<li><a href="#host02">AFNAS02AFNAS02AFNAS02AFNAS02AFNAS02AFNAS02AFNAS02</a></li>
+										<li><a href="#host03" class="active">AFNAS03</a></li>
+										<li><a href="#host04">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+										<li><a href="">AFNAS04</a></li>
+									</ul>
+								</div>
+								<div class="host-content mu-scroll-v">
+									<!-- host-content-table -->
+									<div id="host01" class="host-content-table active"><!-- 활성화된 grid에 active 추가 -->
+										<table class="mu-formbox">
+											<tbody>
+												<tr>
+													<th>Host name</th>
+													<td><strong class="val">AFNAS01</strong></td>
+												</tr>
+												<tr>
+													<th>disk volume</th>
+													<td>
+														<span class="val">8.756GB</span> diskpart-root-excepted-used disk<br>
+														<span class="val">5.542GB</span> diskpart-root-used disk<br>
+														<span class="val">531,235GB</span> total disk
+													</td>
+												</tr>
+												<tr>
+													<th>network usage (RX/TX)</th>
+													<td><span class="val">12816.18 / 15071.53 (kbyte)</span></td>
+												</tr>
+												<tr>
+													<th>cpu usage</th>
+													<td><span class="val">100.0%</span></td>
+												</tr>
+												<tr>
+													<th>mem usage</th>
+													<td><span class="val">43.592%</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- //host-content-table -->
+
+									<!-- host-content-table -->
+									<div id="host02" class="host-content-table">
+										<table class="mu-formbox">
+											<tbody>
+												<tr>
+													<th>Host name</th>
+													<td><strong class="val">AFNAS02</strong></td>
+												</tr>
+												<tr>
+													<th>disk volume</th>
+													<td>
+														<span class="val">8.756GB</span> diskpart-root-excepted-used disk<br>
+														<span class="val">5.542GB</span> diskpart-root-used disk<br>
+														<span class="val">531,235GB</span> total disk
+													</td>
+												</tr>
+												<tr>
+													<th>network usage (RX/TX)</th>
+													<td><span class="val">12816.18 / 15071.53 (kbyte)</span></td>
+												</tr>
+												<tr>
+													<th>cpu usage</th>
+													<td><span class="val">100.0%</span></td>
+												</tr>
+												<tr>
+													<th>mem usage</th>
+													<td><span class="val">43.592%</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- //host-content-table -->
+
+									<!-- host-content-table -->
+									<div id="host03" class="host-content-table">
+										<table class="mu-formbox">
+											<tbody>
+												<tr>
+													<th>Host name</th>
+													<td><strong class="val">AFNAS03</strong></td>
+												</tr>
+												<tr>
+													<th>disk volume</th>
+													<td>
+														<span class="val">8.756GB</span> diskpart-root-excepted-used disk<br>
+														<span class="val">5.542GB</span> diskpart-root-used disk<br>
+														<span class="val">531,235GB</span> total disk
+													</td>
+												</tr>
+												<tr>
+													<th>network usage (RX/TX)</th>
+													<td><span class="val">12816.18 / 15071.53 (kbyte)</span></td>
+												</tr>
+												<tr>
+													<th>cpu usage</th>
+													<td><span class="val">100.0%</span></td>
+												</tr>
+												<tr>
+													<th>mem usage</th>
+													<td><span class="val">43.592%</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- //host-content-table -->
+
+									<!-- host-content-table -->
+									<div id="host04" class="host-content-table">
+										<table class="mu-formbox">
+											<tbody>
+												<tr>
+													<th>Host name</th>
+													<td><strong class="val">AFNAS04</strong></td>
+												</tr>
+												<tr>
+													<th>disk volume</th>
+													<td>
+														<span class="val">8.756GB</span> diskpart-root-excepted-used disk<br>
+														<span class="val">5.542GB</span> diskpart-root-used disk<br>
+														<span class="val">531,235GB</span> total disk
+													</td>
+												</tr>
+												<tr>
+													<th>network usage (RX/TX)</th>
+													<td><span class="val">12816.18 / 15071.53 (kbyte)</span></td>
+												</tr>
+												<tr>
+													<th>cpu usage</th>
+													<td><span class="val">100.0%</span></td>
+												</tr>
+												<tr>
+													<th>mem usage</th>
+													<td><span class="val">43.592%</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- //host-content-table -->
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Host -->
+			</div>
+		</section>
+	</div>
+
+	<footer><span>COPYRIGHT ©</span><span class="footer-logo"></span><span>ALL RIGHT RESERVED.</span></footer>
+
+	<!-- dialog -->
+	<div class="mu-dialog-background" style="display:none;"></div><!-- dialog 배경 -->
+	<div class="mu-dialog mu-fix-foot service-detail" style="top:100px;left:100px;width:800px;height:600px;display:none;">
+		<div class="mu-dialog-head">
+			<span class="title">Service Detail</span>
+			<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon-img close"></i></button>
+		</div>
+		<div class="mu-dialog-body">
+			<div class="service-box normal"><!-- normal -->
+				<div class="service-stat"></div>
+				<div class="service-info">
+					<span class="mu-title">Service 1<br>SMB</span>
+					<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-stop"><i class="mu-icon stop"></i></button>
+					<!--<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-play"><i class="mu-icon play"></i></button>-->
+				</div>
+			</div>
+			<dl>
+				<dt>Service</dt>
+				<dd>
+					<pre>서비스 Type: NFS
+서비스 이름: Service 1
+볼륨 정보(*) + Export Path: ASDASDAS
+권한(ACL) 정보(*): ASDASDASDASD
+통계 정보
+	- 용량: 300G / 성능: 300K / Connection: 3
+
+Detailed Connection 정보
+	- 접속 IP, 접속 아이디, 접속 시간(사용 Protocol Version …)
+장애(상태?) 정보
+	- 장애 포인트 알림 
+	- SW 장애(Gluster, samba, ..), HW 장애 (서버, SSD)
+기타(Optional) 정보
+	- Quota
+	- Snapshot</pre>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Volume</dt>
+				<dd>
+					<pre>서비스 Type: NFS
+서비스 이름: Service 1
+볼륨 정보(*) + Export Path: ASDASDAS
+권한(ACL) 정보(*): ASDASDASDASD
+통계 정보
+	- 용량: 300G / 성능: 300K / Connection: 3
+
+Detailed Connection 정보
+	- 접속 IP, 접속 아이디, 접속 시간(사용 Protocol Version …)
+장애(상태?) 정보
+	- 장애 포인트 알림 
+	- SW 장애(Gluster, samba, ..), HW 장애 (서버, SSD)
+기타(Optional) 정보
+	- Quota
+	- Snapshot</pre>
+				</dd>
+			</dl>
+		</div>
+		<div class="mu-dialog-foot">
+			<button type="button" class="mu-btn mu-btn-icon cancel"><i class="mu-icon close"></i>CLOSE</button>
+		</div>
+	</div>
+
+	<div class="mu-dialog mu-fix-foot service-detail" style="top:100px;left:1000px;width:800px;height:600px;display:none;">
+		<div class="mu-dialog-head">
+			<span class="title">Service Detail</span>
+			<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon-img close"></i></button>
+		</div>
+		<div class="mu-dialog-body">
+			<div class="disk-box normal"><!-- normal -->
+				<div class="disk-set">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span class="used"></span><!-- used 추가-->
+					<span class="used"></span>
+					<span class="used"></span>
+					<span class="used"></span>
+				</div>
+				<div class="disk-info">
+					<span class="mu-title">Service 1<br>SMB</span>
+					<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-stop"><i class="mu-icon stop"></i></button>
+					<!--<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only btn-play"><i class="mu-icon play"></i></button>-->
+				</div>
+			</div>
+			<dl>
+				<dt>Service</dt>
+				<dd>
+					<pre>서비스 Type: NFS
+서비스 이름: Service 1
+볼륨 정보(*) + Export Path: ASDASDAS
+권한(ACL) 정보(*): ASDASDASDASD
+통계 정보
+	- 용량: 300G / 성능: 300K / Connection: 3
+
+Detailed Connection 정보
+	- 접속 IP, 접속 아이디, 접속 시간(사용 Protocol Version …)
+장애(상태?) 정보
+	- 장애 포인트 알림 
+	- SW 장애(Gluster, samba, ..), HW 장애 (서버, SSD)
+기타(Optional) 정보
+	- Quota
+	- Snapshot</pre>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Volume</dt>
+				<dd>
+					<pre>서비스 Type: NFS
+서비스 이름: Service 1
+볼륨 정보(*) + Export Path: ASDASDAS
+권한(ACL) 정보(*): ASDASDASDASD
+통계 정보
+	- 용량: 300G / 성능: 300K / Connection: 3
+
+Detailed Connection 정보
+	- 접속 IP, 접속 아이디, 접속 시간(사용 Protocol Version …)
+장애(상태?) 정보
+	- 장애 포인트 알림 
+	- SW 장애(Gluster, samba, ..), HW 장애 (서버, SSD)
+기타(Optional) 정보
+	- Quota
+	- Snapshot</pre>
+				</dd>
+			</dl>
+		</div>
+		<div class="mu-dialog-foot">
+			<button type="button" class="mu-btn mu-btn-icon cancel"><i class="mu-icon close"></i>CLOSE</button>
+		</div>
+	</div>
+	<!-- //dialog -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/common.js"></script>
+</body>
+</html>

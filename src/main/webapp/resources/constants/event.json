@@ -1,0 +1,8 @@
+{
+	"---------------------------------------------": "TEST-EVENT",
+	"TEST_EVENT": "test-event",
+	"SAMPLE_WEBSOCKET_RECEIVE_EVENT": "sample-websocket-receive-event",
+	
+	"OCCURED_ALARM": "occured-alarm",
+  	"SELECTED_ALARM": "selected-alarm"
+}

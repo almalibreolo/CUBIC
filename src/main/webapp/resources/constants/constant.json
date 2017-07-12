@@ -1,0 +1,61 @@
+{
+	"---------------------------------------------": "EVENT-SERVER",
+	"TEST_CODE": "test-code",
+	"SOCKET_URL": "ws://localhost:8080/msf/websocket-sample",	
+	"WEB_WORKER_URL": "/resources/js/afnas/common/web-socket-worker.js",
+	"REFRESH-INTERVAL": "60000",
+
+	"EVENT_SERVER_ACTIVEMQ_URL": "ws://211.214.168.102:10130",
+	"EVENT_SERVER_ACTIVEMQ_DESTINATION": "/topic/alarmSummaryTopic",
+	"EVENT_SERVER_SEND_URL": "http://211.214.168.102:10110",
+	"EVENT_SERVER_RECEIVE_URL": "http://211.214.168.102:10120",
+
+	"#EVENT_SERVER_ACTIVEMQ_URL": "ws://58.224.211.82:10130",
+	"#EVENT_SERVER_ACTIVEMQ_DESTINATION": "/topic/alarmSummaryTopic",
+	"#EVENT_SERVER_SEND_URL": "http://58.224.211.82:10110",
+	"#EVENT_SERVER_RECEIVE_URL": "http://58.224.211.82:10120",
+	
+	"@EVENT_SERVER_ACTIVEMQ_URL": "ws://100.168.10.250:10130",
+	"@EVENT_SERVER_ACTIVEMQ_DESTINATION": "/topic/alarmSummaryTopic",
+	"@EVENT_SERVER_SEND_URL": "http://100.168.10.250:10110",
+	"@EVENT_SERVER_RECEIVE_URL": "http://100.168.10.250:10120",
+	
+	"---------------------------------------------": "TIME",
+	"TIME": {
+		"FORMAT": "YYYY-MM-DD HH:mm:ss",
+		"POLLING_INTERVAL": 60000,
+		"TIME_RANGES_DEFAULT": 900,
+		"TIME_RANGES": [
+			{"label":"Last 15 Minute", "value": 900, "gap": 15},
+			{"label":"Last 30 Minute", "value": 1800, "gap": 30},
+			{"label":"Last 60 Minute", "value": 3600, "gap": 60},
+			{"label":"Day", "value": 86400, "gap": 1},		
+			{"label":"Week", "value": 604800, "gap": 1},		
+			{"label":"Month", "value": 2592000, "gap": 1},		
+			{"label":"Select Range", "value": "", "gap": 1}
+		]
+	},
+	
+	"---------------------------------------------": "PAGE",
+	"PAGE_PER_COUNT": [
+		{"label": "20", "value": 20},
+		{"label": "30", "value": 30},
+		{"label": "40", "value": 40},
+		{"label": "50", "value": 50}
+	],
+	
+	"---------------------------------------------": "CONST",
+	"ALARM" : {
+		"AGGREGATION_FUNCS": [
+			{"label": "AVG", "value": "avg"},
+			{"label": "MIN", "value": "min"},
+			{"label": "MAX", "value": "max"}
+		],
+		
+		"SEVERITY": [
+			{"label": "CR", "value": "CR"},
+			{"label": "MJ", "value": "MJ"},
+			{"label": "MI", "value": "MI"}
+		]
+	}
+}

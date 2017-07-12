@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- Session 기반 인증 -->
+	<http auto-config="true" use-expressions="true" disable-url-rewriting="true">
+		<csrf disabled="true"/>
+		<expression-handler ref="expressionHandler"/>
+		
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/index/**" access="permitAll" />
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/**" access="hasRegExpRole('^Administrator.*') or hasRegExpRole('^Operator.*') or hasRegExpRole('^Engineer.*')" />
+		
+		<form-login login-page="/" />
+
+		<session-management invalid-session-url="/" session-fixation-protection="none">
+			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+		</session-management>
+
+		<logout invalidate-session="true" logout-success-url="/" delete-cookies="CUBIC_SESSIONID" />
+
+		<custom-filter ref="ajaxTimeoutRedirectFilter" after="EXCEPTION_TRANSLATION_FILTER" />
+	</http>
+
+
+    <!--  사용자 정의 인증 매니저 설정 -->
+    <authentication-manager>
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+	
+	<beans:bean id="customAuthenticationProvider" class="com.mobigen.framework.security.CustomAuthenticationProvider" />
+
+
+	<!--  권한이 없는 세션의 ajax 호출 시, 에러 코드 정의 -->
+	<beans:bean id="ajaxTimeoutRedirectFilter" class="com.mobigen.framework.security.AjaxTimeoutRedirectFilter">
+		<beans:property name="customSessionExpiredErrorCode" value="401" />
+	</beans:bean>
+	
+	
+	<!--  사용자 세션 정보 관리  -->
+	<beans:bean id="sessionManager" class="com.mobigen.framework.security.SessionManager" />
+
+
+	<!--  세션 권한 체크 시 사용하는 임의의 클래스 정의 -->
+	 <global-method-security secured-annotations="enabled" pre-post-annotations="enabled">
+	 	<expression-handler ref="expressionHandler"/>
+	 </global-method-security>
+	 
+	<beans:bean id="expressionHandler" class="com.mobigen.framework.security.CustomWebSecurityExpressionHandler"/>
+
+</beans:beans>

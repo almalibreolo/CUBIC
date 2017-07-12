@@ -1,0 +1,544 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobigen.afnas.dashboard.DashboardMapper">
+
+	<select id="getAfnasInfoServiceList" resultType="AfnasInfoServiceModel">
+		SELECT
+			A.CLUSTER_NAME,
+			A.SHARES_NAME AS SERVICE_NAME,
+			A.SERVICE_ID,
+			A.SERVICE_TYPE,
+			A.GF_VOLUME,
+			A.DEL_FLAG, MAX(A.UP_TIME) AS UP_TIME
+		FROM cm_shares_info A
+		WHERE A.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+		GROUP BY A.SHARES_NAME
+	</select>
+
+	<select id="getGfInfoVolumeList" resultType="GfInfoVolumeModel">
+		SELECT
+			A.CLUSTER_NAME,
+			A.VOLUME_NAME,
+			A.DEL_FLAG, MAX(A.UP_TIME) AS UP_TIME
+		FROM cm_gfs_volume_info A
+		WHERE A.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+		GROUP BY A.VOLUME_NAME
+	</select>
+
+	<select id="getGfInfoVolnhostList" resultType="GfInfoVolnhostModel">
+		SELECT
+			A.CLUSTER_NAME,
+			A.VOLUME_NAME,
+			A.HOST_NAME,
+			A.DEL_FLAG, MAX(A.UP_TIME) AS UP_TIME
+		FROM cm_gfs_volnhost_info A
+		WHERE A.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+		GROUP BY A.VOLUME_NAME, A.HOST_NAME
+	</select>
+
+	<select id="getService" parameterType="ServiceRequestModel" resultType="ServiceModel">
+		SELECT
+			A.system_group_id, A.system_group, A.equip_type, A.system_id,
+			A.system_name, A.equip_ip,
+			B.SHARES_NAME AS SERVICE_NAME, B.SERVICE_ID,
+			B.SERVICE_TYPE, B.GF_VOLUME, B.DEL_FLAG AS SERVICE_DEL_FLAG,
+			C.VOLUME_NAME, C.DEL_FLAG AS VOLUME_DEL_FLAG
+		FROM (
+			SELECT
+				S.system_parent_seq AS system_group_id,
+				(SELECT system_name FROM cm_system WHERE system_seq = S.system_parent_seq LIMIT 1) AS system_group,
+				SI.equip_type,
+				S.system_seq AS system_id,
+				S.system_name,
+				S.system_ip AS equip_ip,
+				S.use_flag
+			FROM cm_system S, cm_system_info SI
+			WHERE S.system_seq = SI.system_seq
+			) A
+			JOIN cm_shares_info B ON A.system_group = B.CLUSTER_NAME
+			JOIN cm_gfs_volume_info C ON B.GF_VOLUME = C.VOLUME_NAME
+		WHERE A.use_flag = 'Y'
+		<if test="serviceName != null and serviceName != ''">
+			AND B.SHARES_NAME = #{serviceName}
+		</if>
+		<if test="gfVolume != null and gfVolume != ''">
+			AND B.GF_VOLUME = #{gfVolume}
+		</if>
+		<if test="volumeName != null and volumeName != ''">
+			AND C.VOLUME_NAME = #{volumeName}
+		</if>
+		GROUP BY B.SHARES_NAME
+	</select>
+
+	<!--<select id="getStatusServiceList" parameterType="ServiceRequestModel" resultType="ServiceModel">
+		SELECT
+			INFO.*,
+			STATUS_SERVICE.HOST_NAME,
+			STATUS_SERVICE.CONNECTION_COUNT,
+			STATUS_VOLUME.VOLUME_TYPE,
+			STATUS_VOLUME.REPLICA_STATE,
+			STATUS_VOLUME.USABLE_CAPACITY,
+			STATUS_VOLUME.USED_CAPACITY,
+			STATUS_VOLUME.BRICKCOUNT,
+			STATUS_VOLUME.ARBITERCOUNT,
+			STATUS_VOLUME.DISPERSECOUNT,
+			STATUS_VOLUME.REDUNDANCYCOUNT,
+			STATUS_VOLUME.REPLICACOUNT,
+			STATUS_VOLUME.SNAPSHOT_COUNT,
+			STATUS_VOLUME.NUM_CLIENTS,
+			STATUS_VOLUME.NUM_CONNECTIONS
+		FROM
+			(SELECT
+				A.system_group_id,
+				A.system_group, A.equip_type, A.system_id, A.system_name, A.equip_ip,
+				B.SERVICE_NAME, B.SERVICE_ID, B.SERVICE_TYPE, B.GF_VOLUME, B.DEL_FLAG AS SERVICE_DEL_FLAG,
+				C.VOLUME_NAME, C.DEL_FLAG AS VOLUME_DEL_FLAG
+			FROM
+				cm_system_info A
+				JOIN cm_shares_info B ON A.system_group = B.CLUSTER_NAME
+				JOIN cm_gfs_volume_info C ON B.GF_VOLUME = C.VOLUME_NAME
+			WHERE A.use_flag = 'Y'
+			<if test="serviceName != null and serviceName != ''">
+				AND B.SERVICE_NAME = #{serviceName}
+			</if>
+			<if test="gfVolume != null and gfVolume != ''">
+				AND B.GF_VOLUME = #{gfVolume}
+			</if>
+			<if test="volumeName != null and volumeName != ''">
+				AND C.VOLUME_NAME = #{volumeName}
+			</if>
+			GROUP BY B.SERVICE_NAME) INFO
+			LEFT JOIN sm_connection_status STATUS_SERVICE ON INFO.SERVICE_NAME = STATUS_SERVICE.SERVICE_NAME
+			LEFT JOIN sm_gfs_volume_status STATUS_VOLUME ON INFO.GF_VOLUME = STATUS_VOLUME.VOLUME_NAME
+		GROUP BY INFO.SERVICE_NAME
+	</select>-->
+
+	<!--<select id="getStatusVolumeList" parameterType="ServiceRequestModel" resultType="ServiceModel">
+		SELECT
+			INFO.*,
+			VOLUME_STATUS.VOLUME_TYPE,
+			VOLUME_STATUS.REPLICA_STATE,
+			VOLUME_STATUS.USABLE_CAPACITY,
+			VOLUME_STATUS.USED_CAPACITY,
+			VOLUME_STATUS.BRICKCOUNT,
+			VOLUME_STATUS.ARBITERCOUNT,
+			VOLUME_STATUS.DISPERSECOUNT,
+			VOLUME_STATUS.REDUNDANCYCOUNT,
+			VOLUME_STATUS.REPLICACOUNT,
+			VOLUME_STATUS.SNAPSHOT_COUNT,
+			VOLUME_STATUS.NUM_CLIENTS,
+			VOLUME_STATUS.NUM_CONNECTIONS
+		FROM
+			(SELECT
+				A.system_group_id,
+				A.system_group, A.equip_type, A.system_id, A.system_name, A.equip_ip,
+				B.SERVICE_NAME, B.SERVICE_ID, B.SERVICE_TYPE, B.GF_VOLUME, B.DEL_FLAG AS SERVICE_DEL_FLAG,
+				C.VOLUME_NAME, C.DEL_FLAG AS VOLUME_DEL_FLAG
+			FROM
+				cm_system_info A
+				JOIN cm_shares_info B ON A.system_group = B.CLUSTER_NAME
+				JOIN cm_gfs_volume_info C ON B.GF_VOLUME = C.VOLUME_NAME
+			WHERE A.use_flag = 'Y'
+				AND B.SERVICE_TYPE = 'NATIVE'
+			<if test="serviceName != null and serviceName != ''">
+				AND B.SERVICE_NAME = #{serviceName}
+			</if>
+			<if test="gfVolume != null and gfVolume != ''">
+				AND B.GF_VOLUME = #{gfVolume}
+			</if>
+			<if test="volumeName != null and volumeName != ''">
+				AND C.VOLUME_NAME = #{volumeName}
+			</if>
+			GROUP BY C.VOLUME_NAME) INFO,
+			sm_gfs_volume_status VOLUME_STATUS
+		WHERE VOLUME_STATUS.VOLUME_NAME = INFO.VOLUME_NAME
+	</select>-->
+
+	<!--<select id="getSysStatusUsageConfig" resultType="HostModel">
+		SELECT HOST_NAME,
+			COLLECT_TIME,
+			SUMMARY
+		FROM sys_status_usage_config
+		ORDER BY HOST_NAME
+	</select>-->
+
+	<!--<select id="getVolumnSize" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT
+			A.VOLUME_NAME,
+			A.USABLE_CAPACITY AS SERVICE_TOTAL,
+			A.USED_CAPACITY AS SERVICE_VALUE,
+			A.COLLECT_TIME AS COLLECT_TIME
+		FROM sm_gfs_volume_status A
+		<if test="serviceList != null and serviceList.size() > 0">
+			WHERE VOLUME_NAME IN (
+				SELECT GF_VOLUME FROM cm_shares_info WHERE SERVICE_NAME IN
+				<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+					#{service}
+				</foreach>
+				GROUP BY GF_VOLUME)
+		</if>
+		ORDER BY A.USED_CAPACITY DESC LIMIT 5
+	</select>-->
+	<!--<select id="getVolumnSizeTotal" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT 'TOTAL' AS SERVICE_NAME, SUM(A.USABLE_CAPACITY) AS SERVICE_TOTAL, SUM(A.USED_CAPACITY) AS SERVICE_VALUE, A.COLLECT_TIME AS COLLECT_TIME
+			FROM (
+				SELECT VOLUME_NAME, USABLE_CAPACITY, USED_CAPACITY, COLLECT_TIME
+				FROM sm_gfs_volume_status
+				<if test="serviceList != null and serviceList.size() > 0">
+					WHERE VOLUME_NAME IN (SELECT GF_VOLUME FROM cm_shares_info WHERE SERVICE_NAME IN
+					<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+						#{service}
+					</foreach>
+					)
+				</if>
+			) A
+	</select>-->
+
+	<!--<select id="getServiceConnection" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT A.SERVICE_NAME AS SERVICE_NAME, A.CONNECTION_COUNT AS SERVICE_VALUE, A.GFS_UP_TIME AS COLLECT_TIME
+		FROM afnas_status_svc_connection_dash A
+				<if test="serviceList != null and serviceList.size() > 0">
+					WHERE A.SERVICE_NAME IN
+					<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+						#{service}
+					</foreach>
+				</if>
+		ORDER BY A.CONNECTION_COUNT DESC LIMIT 5
+	</select>-->
+	<!--<select id="getServiceConnectionTotal" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT 'TOTAL' AS SERVICE_NAME, SUM(B.SERVICE_VALUE) AS SERVICE_VALUE, B.COLLECT_TIME AS COLLECT_TIME
+		FROM (
+			SELECT A.SERVICE_NAME AS SERVICE_NAME, A.CONNECTION_COUNT AS SERVICE_VALUE, A.GFS_UP_TIME AS COLLECT_TIME
+			FROM afnas_status_svc_connection_dash A
+			<if test="serviceList != null and serviceList.size() > 0">
+				WHERE SERVICE_NAME IN
+				<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+					#{service}
+				</foreach>
+			</if>
+		) B
+	</select>-->
+
+	<!--<select id="getServiceSizeWeek" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT A.SERVICE_NAME AS SERVICE_NAME, A.USED_CAPACITY_AVG AS SERVICE_VALUE, A.USABLE_CAPACITY_AVG AS SERVICE_TOTAL, DATE(A.START_TIME) AS COLLECT_TIME
+		  FROM (
+			SELECT START_TIME, END_TIME, CLUSTER_NAME, (SELECT SERVICE_NAME FROM cm_shares_info WHERE GF_VOLUME = VOLUME_NAME) AS SERVICE_NAME, SUM(USABLE_CAPACITY_AVG) AS USABLE_CAPACITY_AVG, SUM(USED_CAPACITY_AVG) AS USED_CAPACITY_AVG
+			FROM gfs_history_volume_1d
+			WHERE DATE(START_TIME) <![CDATA[<]]> DATE(NOW())
+				AND DATE(START_TIME) <![CDATA[>]]> DATE(DATE_SUB(NOW(), INTERVAL 8 DAY))
+			<if test="serviceList != null and serviceList.size() > 0">
+				AND VOLUME_NAME IN ( SELECT GF_VOLUME FROM cm_shares_info WHERE SERVICE_NAME IN
+				<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+					#{service}
+				</foreach>
+				)
+			</if>
+			GROUP BY START_TIME, VOLUME_NAME) A
+	</select>-->
+
+	<!--<select id="getServiceConnectionWeek" parameterType="java.util.Map" resultType="ServiceChartModel">
+		SELECT A.SERVICE_NAME AS SERVICE_NAME, A.CONNECTION_COUNT_AVG AS SERVICE_VALUE, DATE(A.START_TIME) AS COLLECT_TIME
+		FROM (
+			SELECT START_TIME, END_TIME, CLUSTER_NAME, SERVICE_NAME, SUM(CONNECTION_COUNT_MIN) AS CONNECTION_COUNT_MIN, SUM(CONNECTION_COUNT_MAX) AS CONNECTION_COUNT_MAX, SUM(CONNECTION_COUNT_AVG) AS CONNECTION_COUNT_AVG
+			FROM afnas_history_svc_connection_1d
+			WHERE DATE(START_TIME) <![CDATA[<]]> DATE(NOW())
+				AND DATE(START_TIME) <![CDATA[>]]> DATE(DATE_SUB(NOW(), INTERVAL 8 DAY))
+			<if test="serviceList != null and serviceList.size() > 0">
+				AND SERVICE_NAME IN
+				<foreach collection="serviceList" item="service" separator="," open="(" close=")">
+					#{service}
+				</foreach>
+			</if>
+			GROUP BY START_TIME, SERVICE_NAME) A
+	</select>-->
+
+
+	<!--<select id="getStatusService" resultType="StatusModel">
+		SELECT SUM(normal) normalCount, SUM(abnormal) abnormalCount
+		FROM(
+			SELECT
+				COLLECT_TIME, COUNT(DISTINCT CASE WHEN G.REPLICA_STATE ='OK' THEN 1 END) AS normal,
+				COUNT(CASE WHEN G.REPLICA_STATE='NOK' OR G.REPLICA_STATE='POK' THEN 1 END) AS abnormal
+			FROM sm_gfs_volume_status G
+			WHERE G.VOLUME_NAME IN (SELECT GF_VOLUME FROM cm_shares_info WHERE CLUSTER_NAME IN (SELECT system_group FROM cm_system_info WHERE use_flag = 'Y' GROUP BY system_group))
+			GROUP BY G.CLUSTER_NAME, G.VOLUME_NAME) a;
+	</select>-->
+
+	<!--<select id="getStatusVolume" resultType="StatusModel">
+		SELECT SUM(normal) normalCount, SUM(abnormal) abnormalCount
+		FROM(
+			SELECT
+				COLLECT_TIME, COUNT(DISTINCT CASE WHEN REPLICA_STATE ='OK' THEN 1 END) AS normal,
+				COUNT(CASE WHEN REPLICA_STATE='NOK' OR REPLICA_STATE='POK' THEN 1 END) AS abnormal
+			FROM sm_gfs_volume_status G
+			WHERE G.CLUSTER_NAME IN (SELECT system_group FROM cm_system_info WHERE use_flag = 'Y' GROUP BY system_group)
+			GROUP BY VOLUME_NAME,CLUSTER_NAME)a;
+	</select>-->
+
+	<!--<select id="getStatusHost" resultType="StatusModel">
+		SELECT COUNT(CASE WHEN c.status='OK' THEN 1 END) AS normalCount, COUNT(CASE WHEN c.status='unhealthy' THEN 1 END) AS abnormalCount
+		FROM(
+			SELECT COLLECT_TIME AS T, HOST_NAME, STATUS
+			FROM afnas_status_service_dash
+			WHERE HOST_NAME IN
+				(SELECT HOST_NAME FROM cm_gfs_volnhost_info WHERE VOLUME_NAME IN (SELECT GF_VOLUME FROM cm_shares_info WHERE CLUSTER_NAME IN (SELECT system_group FROM cm_system_info WHERE use_flag = 'Y' GROUP BY system_group)) GROUP BY HOST_NAME)
+		) c;
+	</select>-->
+
+	<!--<select id="getStatusCapacity" resultType="StatusServiceModel">
+		SELECT (G.USABLE_CAPACITY) AS totalUnit, G.USED_CAPACITY AS currentUnit
+		FROM sm_cluster_status G
+		WHERE G.CLUSTER_NAME IN
+			(SELECT system_group FROM cm_system_info WHERE use_flag = 'Y' GROUP BY system_group)
+	</select>-->
+
+	<!--<select id="getStatusMaxCapacity" resultType="StatusServiceModel">
+		SELECT MAX(a.USED_CAPACITY) maxUnit
+		FROM(
+			SELECT USED_CAPACITY AS USED_CAPACITY
+			FROM hm_gfs_cluster_status G
+			WHERE G.CLUSTER_NAME IN (SELECT system_group FROM cm_system_info WHERE use_flag = 'Y' GROUP BY system_group)
+			ORDER BY COLLECT_TIME DESC
+				LIMIT 60) a
+	</select>-->
+
+	<!--<select id="getStatusGlusterConnection" resultType="StatusServiceModel">
+		SELECT
+		G.TOTAL_CONNECTIONS AS currentUnit
+		FROM hm_gfs_cluster_status G
+		WHERE
+		G.CLUSTER_NAME IN (
+		SELECT system_group
+		FROM cm_system_info
+		WHERE
+		use_flag = 'Y'
+		GROUP BY system_group)
+		ORDER BY COLLECT_TIME DESC
+		LIMIT
+		1
+	</select>-->
+
+	<!--<select id="getStatusGlusterMaxConnection" resultType="StatusServiceModel">
+		SELECT MAX(TOTAL_CONNECTIONS) maxUnit
+		FROM
+		(
+		SELECT CONVERT(G.TOTAL_CONNECTIONS, UNSIGNED) AS TOTAL_CONNECTIONS
+		FROM
+		hm_gfs_cluster_status G
+		WHERE G.CLUSTER_NAME IN (
+		SELECT system_group
+		FROM
+		cm_system_info
+		WHERE
+		use_flag = 'Y'
+		GROUP BY system_group)
+		ORDER BY
+		COLLECT_TIME DESC
+		LIMIT
+		60
+
+		)a
+	</select>-->
+
+	<!--<select id="getStatusSambaConnection" resultType="StatusServiceModel">
+		SELECT
+		connection_count AS currentUnit
+		FROM afnas_status_connection
+		WHERE
+		CLUSTER_NAME IN
+		(
+		SELECT system_group
+		FROM cm_system_info
+		WHERE
+		use_flag= 'Y'
+		GROUP BY
+		system_group) AND collect_time=(
+		SELECT MAX(collect_time)
+		FROM afnas_status_connection) AND service_name='total'
+		GROUP BY
+		service_name
+
+	</select>-->
+
+	<!--<select id="getStatusSambaMaxConnection" resultType="StatusServiceModel">
+		SELECT MAX(connection_count) AS maxUnit
+		FROM
+		afnas_status_connection
+		WHERE
+		CLUSTER_NAME IN
+		(
+		SELECT system_group
+		FROM
+		cm_system_info
+		WHERE
+		use_flag =
+		'Y'
+		GROUP BY
+		system_group) AND
+		collect_time
+		>= DATE_ADD((
+		SELECT MAX(collect_time)
+		FROM
+		afnas_status_connection), INTERVAL -1 HOUR) AND
+		service_name='total'
+		GROUP BY service_name
+	</select>-->
+
+	<!--<select id="getStatusConnection" resultType="StatusServiceModel">
+		SELECT SUM(A.CONNECTION_COUNT) AS currentUnit
+		FROM (
+			SELECT STATUS.CONNECTION_COUNT
+			FROM cm_system_info SYSTEM,
+				cm_shares_info SERVICE,
+				afnas_status_svc_connection_dash STATUS
+			WHERE SYSTEM.use_flag = 'Y'
+				AND SYSTEM.system_group = SERVICE.CLUSTER_NAME
+				AND SERVICE.SERVICE_NAME = STATUS.SERVICE_NAME
+			GROUP BY SERVICE.SERVICE_ID) A
+	</select>-->
+
+	<!--<select id="getStatusMaxConnection" resultType="StatusServiceModel">
+		SELECT SUM(A.CONNECTION_COUNT) AS maxUnit
+		FROM (
+			SELECT STATUS.*
+			FROM cm_system_info SYSTEM,
+				cm_shares_info SERVICE,
+				(SELECT A.COLLECT_TIME, A.SERVICE_NAME, A.CONNECTION_COUNT
+					FROM afnas_status_svc_connection A,
+						(SELECT MAX(COLLECT_TIME) AS COLLECT_TIME, SERVICE_NAME FROM afnas_status_svc_connection GROUP BY SERVICE_NAME) B
+					WHERE A.SERVICE_NAME=B.SERVICE_NAME and A.COLLECT_TIME=B.COLLECT_TIME
+				) STATUS
+			WHERE SYSTEM.use_flag = 'Y'
+				AND SYSTEM.system_group = SERVICE.CLUSTER_NAME
+				AND SERVICE.SERVICE_NAME = STATUS.SERVICE_NAME
+			GROUP BY SERVICE.SERVICE_ID) A
+	</select>-->
+
+	<!--<select id="getSelectServiceDetail" parameterType="ServiceRequestModel" resultType="ServiceDetailModel">
+		select a.gf_volume as volumeName, c.config_name as configName, c.config_value as configValue, c.up_time as upTime
+		from cm_shares_info_conf c inner join cm_shares_info a
+			on a.service_id=c.service_id
+		where a.service_id=#{serviceId}
+	</select>-->
+
+	<!--<select id="getSelectServiceAlarmDetail" parameterType="ServiceRequestModel" resultType="ServiceDetailAlarmModel">
+		SELECT alarm_code AS alarmCode, STATUS,alarm_name AS
+				alarmName,resource,location,severity,occur_date AS
+				occurDate,occur_user AS occurUser,occur_message AS
+				occurMessage,release_date AS releaseDate,
+				release_user AS releaseUser, release_message AS releaseMessage,ack_date AS
+				ackDate,ack_user AS ackUser,ack_message AS ackMessage,
+				delete_date AS deleteDate,delete_user AS deleteUser,delete_message AS
+				deleteMessage,status_change_date AS statusChangeDate,
+				times,duration,process_name AS processName,etc1,etc2
+		FROM fm_event_history
+		WHERE location= UPPER(#{gfVolume})
+	</select>-->
+
+
+	<!--new-->
+
+	<select id="getSelectServiceDetail" parameterType="ServiceRequestModel" resultType="ServiceDetailModel">
+		SELECT SERVICE_ID,
+		<if test="serviceType == 'SMB'">
+		SMB_CONFIG,
+		</if>
+		GFS_CONFIG,
+		UP_TIME
+		FROM cm_shares_info_config
+		<if test="serviceId != null and serviceId != ''">
+			WHERE SERVICE_ID = #{serviceId}
+		</if>
+	</select>
+
+	<!--<select id="getSelectHostDetail" parameterType="java.util.Map" resultType="HostModel">
+		SELECT HOST_NAME,
+			COLLECT_TIME,
+			SUMMARY
+		FROM sys_status_usage_config
+		&lt;!&ndash;<if test="hostName != null and hostName != ''">
+			WHERE HOST_NAME = #{hostName}
+		</if>&ndash;&gt;
+		<if test="hostList != null and hostList.size() > 0">
+			WHERE HOST_NAME IN
+			<foreach collection="hostList" item="host" separator="," open="(" close=")">
+				#{host}
+			</foreach>
+		</if>
+		GROUP BY HOST_NAME
+	</select>-->
+
+	<select id="getAlarmStatus" resultType="AlarmStatusModel">
+		SELECT
+			SVC_ALARM_COUNT,
+			SVC_ALARM_TOTAL,
+			VOL_ALARM_COUNT,
+			VOL_ALARM_TOTAL,
+			HOST_ALARM_COUNT,
+			HOST_ALARM_TOTAL,
+			CLUSTER_NAME
+		FROM fm_alarm_status
+		WHERE CLUSTER_NAME IN
+			(SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+	</select>
+
+	<select id="getStatusCluster" resultType="StatusClusterModel">
+		SELECT
+			COLLECT_TIME,
+			CLUSTER_NAME,
+			OVER_COMMIT,
+			PRODUCT_NAME,
+			BRICK_COUNT,
+			BRICKS_ACTIVE,
+			NODE_COUNT,
+			NODES_ACTIVE,
+			TOTAL_CONNECTIONS,
+			NUM_CONNECTIONS,
+			SMB_CONNECTIONS,
+			NUM_CLIENTS,
+			SH_ACTIVE,
+			SH_ENABLED,
+			SNAPSHOT_COUNT,
+			STATUS,
+			REPLICA_STATUS,
+			USABLE_CAPACITY,
+			USED_CAPACITY,
+			RAW_CAPACITY,
+			VOLUME_COUNT,
+			VOLUME_STATUS
+		FROM sm_cluster_status G
+		WHERE G.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+	</select>
+
+	<select id="getStatusClusterCapacityMax" resultType="long">
+		SELECT IFNULL(MAX(a.USED_CAPACITY), 0) MAX_CAPACITY
+		FROM(
+			SELECT USED_CAPACITY AS USED_CAPACITY
+			FROM hm_gfs_cluster_status G
+			WHERE G.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+			ORDER BY COLLECT_TIME DESC LIMIT 60) a
+	</select>
+
+	<select id="getStatusClusterConnectionMax" resultType="int">
+		SELECT IFNULL(MAX(a.TOTAL_CONNECTIONS), 0) MAX_CONNECTIONS
+		FROM(
+			SELECT TOTAL_CONNECTIONS AS TOTAL_CONNECTIONS
+			FROM hm_gfs_cluster_status G
+			WHERE G.CLUSTER_NAME IN (SELECT system_name FROM cm_system WHERE use_flag = 'Y' AND system_parent_seq = 0 GROUP BY system_name)
+			ORDER BY COLLECT_TIME DESC LIMIT 60) a
+	</select>
+
+	<select id="getHighestAlarmStatus" resultType="HighestAlarmStatusModel">
+		SELECT
+			NAME,
+			TYPE,
+			ALARM_SEVERITY,
+			UP_TIME,
+			RESOURCE
+		FROM fm_highest_alarm_status
+	</select>
+	
+</mapper>
+

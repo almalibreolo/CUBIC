@@ -1,0 +1,27 @@
+{
+	"SAMPLE": {
+		"MDI": "JQuery MDI Sample",
+		"DASHBOARD": "JQuery Dashboard Sample",
+		"WEBSOCKET": "WebSocket with Worker Sample"
+	},
+	
+	"MENU": {
+		"DASHBOARD": "Dashboard",
+		"RESOURCES": "Resource",
+		"ALARM": "Alarm",
+		"ANALYTICS": "Analytics",
+		"REPORTS": "Reports",
+	  	"SYSTEM": "Status(Management)",
+	  	"MONITORING": "Monitoring"
+	},
+	
+	"HELP": {
+		"DASHBOARD": {
+			"STATUS": "Displays the current normal,abnormal number of services, volumes, and hosts.<br>Size: current usage,total usage, maximum usage over the last 60 minutes based on the current time.<br>Connection: count of currently connected clients, The maximum count of clients that have reached <br>the maximum of the last 60 minutes based on the current time.<br>Throughput: current throughput,maximum throughput over the past 60minutes based on the current<br> time.",
+			"SERVICE": "Outputs the status of the entire service<br>Service information: service name, service type, usage of each service(%)<br>Service severity is color-coded.<br>Critical: red, Major: orange, Minor: yellow, Normal: green<br>The service diagram display changes according to the selected sort item.<br>Severity: Alarm level is displayed in the highest order.<br>Usage: The service is displayed in the highest usage order.",
+			"VOLUME": "Volume status: The cylinder icon that displays the status of the volume is displayed,<br>and the severity is displayed in color<br>Critical: red, Major: orange, Minor: yellow, Normal: green<br>In addition, the filling of the cylinder shows the total usage / current usage.<br>",
+			"NODE": "CUBIC Full Node list output and detailed information of specific node are displayed.<br> Node status display: Displays the severity in color.<br>Critical: red, Major: orange, Minor: yellow, Normal: green<br>  Node list: Displays the entire or selected node name.<br> When clicking a specific node name, detailed information of the corresponding node is scrolled <br> and displayed.<br>Detailed view of Node: Full or detailed information of selected Node is output.<br>",
+			"ALARM": "Displays alarm list of all alarms that occurred and corresponding alarm information when specific<br> area is clicked.<br>Alarm list sort:The initial sort order is the descending order of Occurred Time.If you want to change<br> the sorting criteria, click each header in the table.<br>Acknowledge alarm:When the user clicks the acknowledge button, the alarm is confirmed to another<br> user,and an action is being notified<br>Delete Alarm: Delete corresponding alarm when clicking delete button<br>Alarm Analysis: Go to Analysis page of corresponding Alarm when clicking analysis button<br>"
+		}
+	}
+}

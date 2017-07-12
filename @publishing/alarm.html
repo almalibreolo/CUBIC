@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>CUBIC</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<link href="css/common.css" rel="stylesheet" type="text/css" />
+	<link href="css/layout_top.css" rel="stylesheet" type="text/css" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<header>
+		<h1 class="fl"><span>CUBIC</span></h1>
+		<nav class="mu-gnb fl">
+			<ul class="mu-hMenu fl">
+				<li><a href="#"><span>Dashboard</span></a></li>
+				<li class="active"><a href="#"><span>Alarm</span></a></li>
+			</ul>
+			<div class="mu-topMenu fr">
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon bell"></i><span class="mu-badge">999</span></button>
+				<div class="mu-tooltip bottom">
+					<div class="arrow"></div>
+					<ul class="mu-list">
+						<li class="critical">
+							<span class="remark"></span>
+							<span class="tit">Critical</span>
+							<span class="num">9</span>
+						</li>
+						<li class="major">
+							<span class="remark"></span>
+							<span class="tit">Major</span>
+							<span class="num">999</span>
+						</li>
+						<li class="minor">
+							<span class="remark"></span>
+							<span class="tit">Minor</span>
+							<span class="num">999</span>
+						</li>
+					</ul>
+				</div>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon setting"></i>Settings</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon question"></i>Support</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon user"></i>admin</button>
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon logout"></i></button>
+			</div>
+		</nav>
+	</header>
+	<div class="mu-container">
+		<section>
+
+			<div class="mu-row mu-row-alarm-stat">
+				<!-- Status -->
+				<div class="mu-col mu-col-alarm-stat">
+
+					<div class="mu-panel">
+						<div class="mu-panel-body">
+							<ul class="alarm-stat">
+								<li class="critical "><!-- toggle button - selected 추가 -->
+									<dl>
+										<dt>Critical</dt>
+										<dd>1819</dd>
+									</dl>
+								</li>
+								<li class="major selected">
+									<dl>
+										<dt>Major</dt>
+										<dd>331</dd>
+									</dl>
+								</li>
+								<li class="minor selected">
+									<dl>
+										<dt>Minor</dt>
+										<dd>23</dd>
+									</dl>
+								</li>
+							</ul>
+							<div class="alarm-time">
+								<div class="mu-selectbox"><!-- list펼침시 on추가 -->
+									<button class="mu-value">Average</button>
+									<ul class="mu-list">
+										<li value="1">Average</li>
+										<li value="2">Average</li>
+										<li value="3">Average</li>
+									</ul>
+								</div>
+								<div class="resolved-time">Resolved Time : 15 min</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Status -->
+			</div>
+
+			<div class="mu-row">
+				<!-- Service -->
+				<div class="mu-col mu-col-alarm-list">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Alarm List</span>
+						</div>
+						<div class="mu-panel-body">
+							<div class="alarm-filter">
+								<ul>
+									<li class="service active">Service</li>
+									<li class="volume">Volume</li>
+									<li class="node">Node</li>
+								</ul>
+							</div>
+							<div class="mu-grid-wrap alarm-list">
+								<div class="mu-grid-top">
+									<div class="mu-hgroup fl">
+										<div class="mu-item-group">
+											<div class="mu-btn-dropdown on"><!-- list펼침시 on 추가-->
+												<input type="text" class="mu-input">
+												<button type="button" class="mu-btn mu-btn-icon"></button>
+
+												<div class="mu-dropdown-body">
+													<table class="mu-formbox">
+														<colgroup>
+															<col width="150px">
+															<col width="">
+															<col width="90px">
+														</colgroup>
+														<tbody>
+															<tr>
+																<th>
+																	<div class="mu-selectbox">
+																		<button class="mu-value">등급</button>
+																		<ul class="mu-list">
+																			<li value="1">등급</li>
+																			<li value="2">알람 발생일</li>
+																			<li value="3">메세지</li>
+																		</ul>
+																	</div>
+																</th>
+																<td>
+																	<div class="mu-selectbox">
+																		<button class="mu-value">선택</button>
+																		<ul class="mu-list">
+																			<li value="1">선택</li>
+																			<li value="2">선택</li>
+																			<li value="3">선택</li>
+																		</ul>
+																	</div>
+																</td>
+																<td>
+																	<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only cancel"><i class="mu-icon minus"></i></button>
+																</td>
+															</tr>
+															<tr>
+																<th>
+																	<div class="mu-selectbox">
+																		<button class="mu-value">등급</button>
+																		<ul class="mu-list">
+																			<li value="1">등급</li>
+																			<li value="2">알람 발생일</li>
+																			<li value="3">메세지</li>
+																		</ul>
+																	</div>
+																</th>
+																<td>
+																	<!-- select-input -->
+																	<div class="mu-selectbox on">
+																		<input type="text" class="mu-input">
+																		<ul class="mu-list">
+																			<li value="1">선택</li>
+																			<li value="2">선택</li>
+																			<li value="3">선택</li>
+																		</ul>
+																	</div>
+																</td>
+																<td>
+																	<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only cancel"><i class="mu-icon minus"></i></button>
+																</td>
+															</tr>
+															<tr>
+																<th>
+																	<div class="mu-selectbox">
+																		<button class="mu-value">알람 발생일</button>
+																		<ul class="mu-list">
+																			<li value="1">등급</li>
+																			<li value="2">알람 발생일</li>
+																			<li value="3">메세지</li>
+																		</ul>
+																	</div>
+																</th>
+																<td>
+																	<div class="mu-datepicker">
+																		<input type="text" value="05/20/2015" readonly="readonly">
+																		<button class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon calendar"></i></button>
+																	</div>
+																	<span>~</span>
+																	<div class="mu-datepicker">
+																		<input type="text" value="05/20/2015" readonly="readonly">
+																		<button class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon calendar"></i></button>
+																	</div>
+																</td>
+																<td>
+																	<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only cancel"><i class="mu-icon minus"></i></button>
+																</td>
+															</tr>
+															<tr>
+																<th>
+																	<div class="mu-selectbox">
+																		<button class="mu-value">메세지</button>
+																		<ul class="mu-list">
+																			<li value="1">등급</li>
+																			<li value="2">알람 발생일</li>
+																			<li value="3">메세지</li>
+																		</ul>
+																	</div>
+																</th>
+																<td>
+																	<input type="text" class="mu-input" placeholder="메세지를 입력하세요">
+																</td>
+																<td>
+																	<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only cancel"><i class="mu-icon minus"></i></button>
+																	<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon plus"></i></button>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<div class="mu-btn-wrap">
+														<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon check"></i>확인</button>
+														<button type="button" class="mu-btn mu-btn-icon cancel"><i class="mu-icon close"></i>취소</button>
+													</div>
+												</div>
+											</div>
+											<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon search"></i></button>
+										</div>
+										<div class="mu-item-group">
+											<span>2016/10/31 20:30:10 ~ 2016/11/31 20:30:10</span>
+											<div class="mu-selectbox on">
+												<button class="mu-value">Last 15 Minute</button>
+												<ul class="mu-list">
+													<li value="1">Last 15 Minute</li>
+													<li value="2">Last 15 Minute</li>
+													<li value="3">Last 15 Minute</li>
+												</ul>
+											</div>
+											<div class="mu-item-group">
+												<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon prev"></i></button>
+												<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon pause"></i></button>
+												<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon next"></i></button>
+											</div>
+										</div>
+									</div>
+									<div class="mu-hgroup fr">
+										<div class="mu-item-group">
+											<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon download"></i>CSV Download</button>
+										</div>
+									</div>
+									<!-- 기간설정 tooltip -->
+									<div class="mu-tooltip" style="top:22px;left:650px;z-index:10;">
+										<div class="mu-tooltip-inner">
+											<div class="mu-datepicker">
+												<input type="text" value="05/20/2015" readonly="readonly" class="datepicker">
+												<button class="mu-btn mu-btn-icon mu-btn-icon-only datepicker"><i class="mu-icon calendar"></i></button>
+												<div class="mu-timepicker">
+													<input type="text" value="00">
+													<span>:</span>
+													<input type="text" value="00">
+													<span>:</span>
+													<input type="text" value="00">
+												</div>
+											</div>
+											<span>~</span>
+											<div class="mu-datepicker">
+												<input type="text" value="05/20/2015" readonly="readonly">
+												<button class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon calendar"></i></button>
+												<div class="mu-timepicker">
+													<input type="text" value="00">
+													<span>:</span>
+													<input type="text" value="00">
+													<span>:</span>
+													<input type="text" value="00">
+												</div>
+											</div>
+										</div>
+										<div class="mu-tooltip-foot">
+											<div class="mu-btn-wrap">
+												<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon check"></i>확인</button>
+												<button type="button" class="mu-btn mu-btn-icon cancel"><i class="mu-icon close"></i>취소</button>
+											</div>
+										</div>
+									</div>
+									<!-- //기간설정 tooltip -->
+								</div>
+								<div class="mu-grid-body">
+									<!-- grid -->
+									<div class="mu-grid-scroll mu-grid-border">
+										<table class="mu-grid">
+											<colgroup>
+												<col width="100">
+												<col width="120">
+												<col width="80">
+												<col width="80">
+												<col>
+												<col width="150">
+												<col width="150">
+												<col width="150">
+												<col width="150">
+												<col width="80">
+												<col width="17"><!-- scroll bar width -->
+											</colgroup>
+											<thead>
+												<tr>
+													<th>Alarm Code</th>
+													<th>Alarm Name</th>
+													<th>Severity</th>
+													<th>Resource</th>
+													<th>Location</th>
+													<th>Occurred Time</th>
+													<th>Acknowledge Time</th>
+													<th>Release Time</th>
+													<th>Tag</th>
+													<th></th>
+													<th></th><!-- scroll bar width -->
+												</tr>
+											</thead>
+										</table>
+										<div class="mu-scroll-v">
+											<table class="mu-grid">
+												<colgroup>
+													<col width="100">
+													<col width="120">
+													<col width="80">
+													<col width="80">
+													<col>
+													<col width="150">
+													<col width="150">
+													<col width="150">
+													<col width="150">
+													<col width="80">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>A20001</td>
+														<td>BRICK_DISK_FAIL</td>
+														<td><span class="stat critical"></span>CR</td>
+														<td>AFNAS03</td>
+														<td>AFNAS03:/HOME/BRICKS/CBRICK01</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td><input type="text" class="mu-input"></td>
+														<td>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon check"></i></button>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+														</td>
+													</tr>
+													<tr>
+														<td>A20001</td>
+														<td>BRICK_DISK_FAIL</td>
+														<td><span class="stat major"></span>CR</td>
+														<td>AFNAS03</td>
+														<td>AFNAS03:/HOME/BRICKS/CBRICK01</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td></td>
+														<td>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon tag"></i></button>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+														</td>
+													</tr>
+													<tr>
+														<td>A20001</td>
+														<td>BRICK_DISK_FAIL</td>
+														<td><span class="stat minor"></span>CR</td>
+														<td>AFNAS03</td>
+														<td>AFNAS03:/HOME/BRICKS/CBRICK01</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td>2016-12-21-14:09:10</td>
+														<td></td>
+														<td>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon tag"></i></button>
+															<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon share"></i></button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- //grid -->
+								</div>
+								<!-- pagination-area-total -->
+								<div class="pagination-area-total">
+									<!-- pagination-area -->
+									<div class="pagination-area">
+										<ul class="pagination">
+											<li class="pagination-first"><a href="#none" title="First">First</a></li>
+											<li class="pagination-prev"><a href="#none" title="Previous">Previous</a></li>
+											<li class="active"><a href="#none">11</a></li>
+											<li class="disabled"><a href="#none">22</a></li>
+											<li><a href="#none">23</a></li>
+											<li><a href="#none">24</a></li>
+											<li><a href="#none">250</a></li>
+											<li><a href="#none" title="338900">338900</a></li>
+											<li><a href="#none">...</a></li>
+											<li class="pagination-next"><a href="#none" title="Next">Next</a></li>
+											<li class="pagination-last disabled"><a href="#none" title="Last">Last</a></li>
+										</ul>
+									</div>
+									<!-- //pagination-area -->
+									<!-- result-page-group -->
+									<div class="result-page-group">
+										<span class="title">Result per page</span>
+										<!-- selectbox -->
+										<div class="mu-selectbox">
+											<button class="mu-value">10</button>
+											<ul class="mu-list">
+												<li value="1">10</li>
+												<li value="2">20</li>
+												<li value="3">30</li>
+											</ul>
+										</div>
+										<!-- //selectbox -->
+									</div>
+									<!-- //result-page-group -->
+								</div>
+								<!-- //pagination-area-total -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Service -->
+
+				<!-- Volume -->
+				<div class="mu-col mu-col-alarm-defi">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Alarm Definition</span>
+						</div>
+						<div class="mu-panel-body">
+							<div class="mu-grid-wrap alram-rule">
+								<div class="mu-grid-top">
+									<div class="mu-item-group fl">
+										<input type="text" class="mu-input" placeholder="search...">
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon search"></i></button>
+									</div>
+									<div class="mu-item-group fr">
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon edit"></i></button>
+										<!--<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon check"></i></button>
+										<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only cancel"><i class="mu-icon close"></i></button>-->
+									</div>
+								</div>
+								<div class="mu-grid-body">
+									<!-- grid -->
+									<div class="mu-grid-scroll mu-grid-border">
+										<table class="mu-grid">
+											<colgroup>
+												<col width="34">
+												<col width="110">
+												<col>
+												<col width="17"><!-- scroll bar width -->
+											</colgroup>
+											<thead>
+												<tr>
+													<th>
+														<div class="mu-checkbox">
+															<input id="ckbtblall" type="checkbox">
+															<label for="ckbtblall"></label>
+														</div>
+													</th>
+													<th>Severity</th>
+													<th>Alarm Name</th>
+													<th></th><!-- scroll bar width -->
+												</tr>
+											</thead>
+										</table>
+										<div class="mu-scroll-v">
+											<table class="mu-grid">
+												<colgroup>
+													<col width="34">
+													<col width="110">
+													<col>
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>
+															<div class="mu-checkbox">
+																<input id="ckbtbl1" type="checkbox">
+																<label for="ckbtbl1"></label>
+															</div>
+														</td>
+														<td>
+															<div class="mu-selectbox on">
+																<button class="mu-value"><span class="stat critical"></span>CR</button>
+																<ul class="mu-list">
+																	<li value="1"><span class="stat critical"></span>Critical</li>
+																	<li value="2"><span class="stat major"></span>Major</li>
+																	<li value="3"><span class="stat minor"></span>Minor</li>
+																</ul>
+															</div>
+														</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td>
+															<div class="mu-checkbox">
+																<input id="ckbtbl2" type="checkbox">
+																<label for="ckbtbl2"></label>
+															</div>
+														</td>
+														<td><span class="stat critical"></span>CR</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td>
+															<div class="mu-checkbox">
+																<input id="ckbtbl3" type="checkbox">
+																<label for="ckbtbl3"></label>
+															</div>
+														</td>
+														<td><span class="stat critical"></span>CR</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td>
+															<div class="mu-checkbox">
+																<input id="ckbtbl4" type="checkbox">
+																<label for="ckbtbl4"></label>
+															</div>
+														</td>
+														<td><span class="stat critical"></span>CR</td>
+														<td></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- //grid -->
+								</div>
+							</div>
+							<div class="alarm-detail">
+								<div class="mu-panel">
+									<div class="mu-panel-head">
+										<span class="mu-title">Detail</span>
+									</div>
+									<div class="mu-panel-body">
+										<table class="mu-formbox">
+											<tbody>
+												<tr>
+													<th>Alarm Name:</th>
+													<td>BRICK_DISK_FAIL</td>
+												</tr>
+												<tr>
+													<th>Severity:</th>
+													<td>BRICK_DISK_FAIL</td>
+												</tr>
+												<tr>
+													<th>Create Date:</th>
+													<td>2016/12/23 10:10:10</td>
+												</tr>
+												<tr>
+													<th>Process Name:</th>
+													<td>SMB</td>
+												</tr>
+												<tr>
+													<th>Rule:</th>
+													<td>CPU_IDLE > 60</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Volume -->
+			</div>
+		</section>
+	</div>
+
+	<footer><span>COPYRIGHT ©</span><span class="footer-logo"></span><span>ALL RIGHT RESERVED.</span></footer>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/common.js"></script>
+	<script>
+		/* datepicker */
+		$( function(){
+
+			$(".datepicker").datepicker();
+
+		});
+	</script>
+</body>
+</html>

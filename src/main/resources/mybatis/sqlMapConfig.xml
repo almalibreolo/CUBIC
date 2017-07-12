@@ -1,0 +1,62 @@
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="autoMappingBehavior" value="PARTIAL" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<setting name="defaultStatementTimeout" value="180" />
+		<setting name="safeRowBoundsEnabled" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="localCacheScope" value="SESSION" />
+		<setting name="jdbcTypeForNull" value="OTHER" />
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.mobigen.afnas.user.model.UserModel" alias="UserModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.CmSystemInfoModel" alias="CmSystemInfoModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.AfnasInfoServiceModel" alias="AfnasInfoServiceModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.GfInfoVolumeModel" alias="GfInfoVolumeModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.GfInfoVolnhostModel" alias="GfInfoVolnhostModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.ServiceRequestModel" alias="ServiceRequestModel" />
+		<typeAlias type="com.mobigen.afnas.common.model.ServiceModel" alias="ServiceModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.ServiceChartModel" alias="ServiceChartModel" />
+		<typeAlias type="com.mobigen.afnas.dashboard.model.StatusModel" alias="StatusModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.StatusServiceModel" alias="StatusServiceModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.ServiceDetailModel" alias="ServiceDetailModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.ServiceDetailAlarmModel" alias="ServiceDetailAlarmModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.AlarmStatusModel" alias="AlarmStatusModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.StatusClusterModel" alias="StatusClusterModel"/>
+		<typeAlias type="com.mobigen.afnas.dashboard.model.HighestAlarmStatusModel" alias="HighestAlarmStatusModel"/>
+		<typeAlias type="com.mobigen.afnas.common.model.HostModel" alias="HostModel"/>
+		<typeAlias type="com.mobigen.afnas.alarm.model.EventHistoryModel" alias="EventHistoryModel"/>
+		<typeAlias type="com.mobigen.afnas.alarm.model.EventHistoryParamModel" alias="EventHistoryParamModel"/>
+		<typeAlias type="com.mobigen.afnas.alarm.model.EventHistoryResultModel" alias="EventHistoryResultModel"/>
+		<typeAlias type="com.mobigen.afnas.alarm.model.EventConfigModel" alias="EventConfigModel"/>
+		<typeAlias type="com.mobigen.afnas.common.model.RequestModel" alias="RequestModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.CmSystemProcessModel" alias="CmSystemProcessModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmKafkaserverTopicStatusModel" alias="HmKafkaserverTopicStatusModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.DBListModel" alias="DBListModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmKafkaserverMetricsModel" alias="HmKafkaserverMetricsModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmSystemCpuModel" alias="HmSystemCpuModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmSystemMemoryModel" alias="HmSystemMemoryModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmSystemNetworkModel" alias="HmSystemNetworkModel"/>
+		<typeAlias type="com.mobigen.afnas.monitoring.model.HmSystemDiskfreeModel" alias="HmSystemDiskfreeModel"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="/mybatis/mapper/afnas/common/common-mapper.xml" />
+		<mapper resource="/mybatis/mapper/afnas/user/user-mapper.xml" />
+		<mapper resource="/mybatis/mapper/afnas/dashboard/dashboard-mapper.xml" />
+		<mapper resource="/mybatis/mapper/afnas/system/system-mapper.xml" />
+		<mapper resource="/mybatis/mapper/afnas/alarm/alarm-mapper.xml" />
+		<mapper resource="/mybatis/mapper/afnas/monitoring/monitoring-mapper.xml" />
+	</mappers>
+</configuration>

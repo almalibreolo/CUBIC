@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>CUBIC</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<link href="css/common.css" rel="stylesheet" type="text/css" />
+	<link href="css/layout_top.css" rel="stylesheet" type="text/css" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<header>
+		<h1 class="fl"><span>CUBIC</span></h1>
+		<nav class="mu-gnb fl">
+			<ul class="mu-hMenu fl">
+				<li><a href="#"><span>Dashboard</span></a></li>
+				<li><a href="#"><span>Alarm</span></a></li>
+				<li class="active"><a href="#"><span>Monitoring</span></a></li>
+			</ul>
+			<div class="mu-topMenu fr">
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon bell"></i><span class="mu-badge">999</span></button>
+				<div class="mu-tooltip bottom">
+					<div class="arrow"></div>
+					<ul class="mu-list">
+						<li class="critical">
+							<span class="remark"></span>
+							<span class="tit">Critical</span>
+							<span class="num">9</span>
+						</li>
+						<li class="major">
+							<span class="remark"></span>
+							<span class="tit">Major</span>
+							<span class="num">999</span>
+						</li>
+						<li class="minor">
+							<span class="remark"></span>
+							<span class="tit">Minor</span>
+							<span class="num">999</span>
+						</li>
+					</ul>
+				</div>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon setting"></i>Settings</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon question"></i>Support</button>
+				<button type="button" class="mu-btn mu-btn-icon"><i class="mu-icon user"></i>admin</button>
+				<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon logout"></i></button>
+			</div>
+		</nav>
+	</header>
+	<div class="mu-container">
+		<section>
+
+			<div class="mu-row mu-row-monitoring">
+				<!-- Service -->
+				<div class="mu-col mu-col-overview">
+
+					<div class="mu-panel">
+						<div class="mu-panel-head">
+							<span class="mu-title">Overview</span>
+							<div class="mu-item-group fr">
+								<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon list"></i></button>
+								<div class="mu-tooltip bottom">
+									<div class="arrow"></div>
+									<ul class="mu-list">
+										<li>
+											<div class="mu-radio">
+												<input type="radio" id="r0" name="overview" checked="checked">
+												<label for="r0"><i class="mu-icon sort-asc"></i>Process</label>
+											</div>
+										</li>
+										<li>
+											<div class="mu-radio">
+												<input type="radio" id="r1" name="overview">
+												<label for="r1"><i class="mu-icon sort-desc"></i>System</label>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<button type="button" class="mu-btn mu-btn-icon mu-btn-bg-non"><i class="mu-icon search"></i></button>
+							</div>
+						</div>
+						<div class="mu-panel-body">
+							<div class="overview-wrap">
+								<div class="mu-item-group">
+									<input type="text" class="mu-input" placeholder="search...">
+									<button type="button" class="mu-btn mu-btn-icon mu-btn-icon-only"><i class="mu-icon search"></i></button>
+								</div>
+								<div class="mu-scroll-v">
+									<dl>
+										<dt>Kafka</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-02<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-03<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-04<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-05<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-06<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+											</ul>
+										</dd>
+									</dl>
+									<dl>
+										<dt>Zookeeper</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+											</ul>
+										</dd>
+									</dl>
+									<dl>
+										<dt>Elasticsearch</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-02<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-03<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-04<span class="dead">Dead</span></li>
+												<li>afnas-001-05<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-06<span class="dead">Dead</span></li>
+											</ul>
+										</dd>
+									</dl>
+									<dl>
+										<dt>Elasticsearch</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-02<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-03<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-04<span class="dead">Dead</span></li>
+												<li>afnas-001-05<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-06<span class="dead">Dead</span></li>
+											</ul>
+										</dd>
+									</dl>
+									<dl>
+										<dt>Elasticsearch</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-02<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-03<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-04<span class="dead">Dead</span></li>
+												<li>afnas-001-05<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-06<span class="dead">Dead</span></li>
+											</ul>
+										</dd>
+									</dl>
+									<dl>
+										<dt>Elasticsearch</dt>
+										<dd>
+											<ul>
+												<li>afnas-001-01<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-02<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-03<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-04<span class="dead">Dead</span></li>
+												<li>afnas-001-05<span class="alive">Alive (14days 04h 59m 55s )</span></li>
+												<li>afnas-001-06<span class="dead">Dead</span></li>
+											</ul>
+										</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- //Service -->
+
+				<!-- Volume -->
+				<div class="mu-col">
+					<div class="mu-row mu-row-batch">
+						<div class="mu-col">
+
+							<div class="mu-panel">
+								<div class="mu-panel-head">
+									<span class="mu-title">Last Batch Time</span>
+								</div>
+								<div class="mu-panel-body">
+									<div class="batch-wrap">
+										<span class="mu-tooltip events">1,230</span>
+										<span class="mu-tooltip metrics">5,000</span>
+										<span class="mu-tooltip logs">200</span>
+										<span class="mu-tooltip alarms">0</span>
+										<span class="mu-tooltip connections">5</span>
+										<span class="mu-badge metric">999</span>
+										<span class="mu-badge log">999</span>
+										<span class="mu-badge kafka">9</span>
+										<span class="mu-badge eventmanage">999</span>
+										<span class="mu-badge spark">9</span>
+										<span class="mu-badge mariadb">9</span>
+										<span class="mu-badge elastic">9</span>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="mu-row mu-row-maria">
+						<div class="mu-col mu-col-4">
+
+							<div class="mu-panel">
+								<div class="mu-panel-head">
+									<span class="mu-title">MatiaDB</span>
+									<div class="mu-item-group fr">
+										<span class="usage">Disk Usage <strong>59.9GB</strong></span>
+									</div>
+								</div>
+								<div class="mu-panel-body">
+									<div class="mu-grid-scroll mu-grid-border">
+										<table class="mu-grid">
+											<colgroup>
+												<col>
+												<col width="80">
+												<col width="160">
+												<col width="17"><!-- scroll bar width -->
+											</colgroup>
+											<thead>
+												<tr>
+													<th>Node Name</th>
+													<th>Shares</th>
+													<th>Update Time</th>
+													<th></th><!-- scroll bar width -->
+												</tr>
+											</thead>
+										</table>
+										<div class="mu-scroll-v">
+											<table class="mu-grid">
+												<colgroup>
+													<col>
+													<col width="80">
+													<col width="160">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+													<tr>
+														<td>Afnas01</td>
+														<td>GFS</td>
+														<td>2017-01-17 10:01:27</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="mu-col mu-col-4">
+
+							<div class="mu-panel">
+								<div class="mu-panel-head">
+									<span class="mu-title">Elastic Search</span>
+									<div class="mu-item-group fr">
+										<span class="usage">Disk Usage <strong>59.9GB</strong></span>
+									</div>
+								</div>
+								<div class="mu-panel-body">
+									<div class="mu-grid-scroll mu-grid-border">
+										<table class="mu-grid">
+											<colgroup>
+												<col>
+												<col width="80">
+												<col width="80">
+												<col width="80">
+												<col width="17"><!-- scroll bar width -->
+											</colgroup>
+											<thead>
+												<tr>
+													<th>Index</th>
+													<th>Shares</th>
+													<th>Replica</th>
+													<th>Size</th>
+													<th></th><!-- scroll bar width -->
+												</tr>
+											</thead>
+										</table>
+										<div class="mu-scroll-v">
+											<table class="mu-grid">
+												<colgroup>
+													<col>
+													<col width="80">
+													<col width="80">
+													<col width="80">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+													<tr>
+														<td>rsyslog-20170223</td>
+														<td>3</td>
+														<td>1</td>
+														<td>0.09GB</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="mu-col mu-col-4">
+
+							<div class="mu-panel">
+								<div class="mu-panel-head">
+									<span class="mu-title">Kafka</span>
+								</div>
+								<div class="mu-panel-body">
+									<div class="mu-grid-scroll mu-grid-border">
+										<table class="mu-grid">
+											<colgroup>
+												<col>
+												<col width="160">
+												<col width="17"><!-- scroll bar width -->
+											</colgroup>
+											<thead>
+												<tr>
+													<th>Topic</th>
+													<th>Message</th>
+													<th></th><!-- scroll bar width -->
+												</tr>
+											</thead>
+										</table>
+										<div class="mu-scroll-v">
+											<table class="mu-grid">
+												<colgroup>
+													<col>
+													<col width="160">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+													<tr>
+														<td>test.logs</td>
+														<td>2</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="mu-row mu-row-kafka">
+						<div class="mu-col mu-col-tab">
+
+							<div class="mu-panel">
+								<div class="mu-panel-head">
+									<ul class="mu-tab">
+										<li class="active"><a href="">Kafka</a></li>
+										<li><a href="">System</a></li>
+										<li><a href="">Network</a></li>
+										<li><a href="">Disk</a></li>
+									</ul>
+								</div>
+								<div class="mu-panel-body mu-tab-body">
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- //Volume -->
+			</div>
+		</section>
+	</div>
+
+	<footer><span>COPYRIGHT ©</span><span class="footer-logo"></span><span>ALL RIGHT RESERVED.</span></footer>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/common.js"></script>
+	<script>
+		/* datepicker */
+		$( function(){
+
+			$(".datepicker").datepicker();
+
+		});
+	</script>
+</body>
+</html>

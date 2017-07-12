@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jdbc
+		http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util.xsd
+		http://mybatis.org/schema/mybatis-spring
+		http://mybatis.org/schema/mybatis-spring.xsd
+		http://www.springframework.org/schema/tx
+   		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- DataSource -->
+	<util:properties id="prop" location="classpath:properties/database.xml" />
+	<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{prop['jdbc.driverClassName']}" />
+		<property name="url" value="#{prop['jdbc.url']}" />
+		<property name="username" value="#{prop['jdbc.username']}" />
+		<property name="password" value="#{prop['jdbc.password']}" />
+		<property name="defaultAutoCommit" value="#{prop['jdbc.defaultautocommit']}" />
+		<property name="maxActive" value="#{prop['jdbc.maxActive']}" />
+		<property name="minIdle" value="#{prop['jdbc.minIdle']}" />
+		<property name="maxIdle" value="#{prop['jdbc.maxIdle']}" />
+		<property name="maxWait" value="#{prop['jdbc.maxWait']}" />
+		<property name="testOnBorrow" value="#{prop['jdbc.testOnBorrow']}" />
+		<property name="testWhileIdle" value="#{prop['jdbc.testWhileIdle']}" />
+		<property name="timeBetweenEvictionRunsMillis" value="#{prop['jdbc.timeBetweenEvictionRunsMillis']}" />
+		<property name="validationQuery" value="#{prop['jdbc.validationQuery']}" />
+		<property name="poolPreparedStatements" value="#{prop['jdbc.poolPreparedStatements']}" />
+	</bean>
+
+	<!-- Mybatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- Transaction -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+	<!-- Auto Scan -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.mobigen, com.raphael" />
+	</bean>
+
+</beans>

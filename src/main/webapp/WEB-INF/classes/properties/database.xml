@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- Oracle -->
+	<!--<entry key="jdbc.driverClassName">oracle.jdbc.driver.OracleDriver</entry>
+	<entry key="jdbc.url"><![CDATA[jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=221.132.71.207)(PORT=13330)))(CONNECT_DATA=(SERVICE_NAME=SGDB)))]]></entry>
+	-->
+
+	<!--MariaDB -->
+	<!--<entry key="jdbc.driverClassName">org.mariadb.jdbc.Driver</entry>
+	<entry key="jdbc.url">jdbc:mariadb://221.132.71.220:3306/rams</entry>
+	-->
+
+	<!-- MySQL -->
+	<!-- http://commons.apache.org/proper/commons-dbcp/configuration.html 참조 -->
+	<entry key="jdbc.driverClassName">com.mysql.jdbc.Driver</entry>
+	<!--<entry key="jdbc.url">jdbc:mysql://211.214.168.102:33060/afnas</entry>-->
+	<entry key="jdbc.url">jdbc:mysql://211.214.168.102:33060/cubic</entry>
+	<entry key="jdbc.username">afnas</entry>
+	<entry key="jdbc.password">afnas123</entry>
+	<entry key="jdbc.defaultautocommit">false</entry>
+	<entry key="jdbc.initialSize">100</entry>
+	<entry key="jdbc.maxActive">150</entry>
+	<entry key="jdbc.minIdle">10</entry>
+	<entry key="jdbc.maxIdle">30</entry>
+	<entry key="jdbc.maxWait">10000</entry>
+	<entry key="jdbc.testOnBorrow">true</entry>
+	<entry key="jdbc.testOnReturn">true</entry>
+	<entry key="jdbc.testWhileIdle">true</entry>
+	<entry key="jdbc.timeBetweenEvictionRunsMillis">130000</entry>
+	<entry key="jdbc.minEvictableIdleTimeMillis">120000</entry>
+	<entry key="jdbc.numTestsPerEvictionRun">20</entry>
+	<entry key="jdbc.removeAbandonedTimeout">30</entry>
+	<entry key="jdbc.removeAbandoned">30</entry>
+	<entry key="jdbc.logAbandoned">false</entry>
+	<entry key="jdbc.validationQuery">select 1 from dual</entry>
+	<entry key="jdbc.maxOpenPreparedStatements">100</entry>
+	<entry key="jdbc.poolPreparedStatements">true</entry>
+</properties>

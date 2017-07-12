@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="com.mobigen.framework.exception.GlobalExceptionHandler">A system error has occurred.</entry>
+	<entry key="org.springframework.security.access.AccessDeniedException">해당 권한이 없습니다. 관리자에게 문의하여 주시기 바랍니다.</entry>
+	<entry key="com.mobigen.msf.sample.login.LoginController.login">로그인을 실패하였습니다. 사용자 정보를 다시 한번 확인 해 주시기 바랍니다.</entry>
+    <entry key="com.mobigen.afnas.user.UserController.login">User or Password not found.</entry>
+    <entry key="com.mobigen.afnas.user.UserController.addUser">This ID is already registered. Please enter a different ID.</entry>
+     <entry key="com.mobigen.afnas.user.UserController.checkPassword">Password do not match.</entry>
+	<entry key="org.springframework.security.authentication.AuthenticationCredentialsNotFoundException">User or Password not found.</entry>
+	<entry key="org.springframework.security.core.userdetails.UsernameNotFoundException">No account information. It can be used to create user accounts.</entry>
+</properties>

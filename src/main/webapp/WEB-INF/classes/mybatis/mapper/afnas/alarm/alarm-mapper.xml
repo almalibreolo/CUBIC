@@ -1,0 +1,301 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobigen.afnas.alarm.AlarmMapper">
+
+	<select id="getEventConfigList" resultType="EventConfigModel">
+		SELECT
+			A.insert_time,
+			A.system_seq,
+			A.process_seq,
+			A.process_name,
+			A.event_seq,
+			A.alarm_name,
+			A.severity,
+			A.repeat_count,
+			A.use_flag,
+			A.sms_flag,
+			A.condition_count
+		FROM cm_event_config A
+		ORDER BY A.event_seq
+	</select>
+
+	<select id="getEventNameList" resultType="EventConfigModel">
+		SELECT
+			A.alarm_name
+		FROM cm_event_config A
+		GROUP BY  A.alarm_name
+		ORDER BY A.alarm_name;
+	</select>
+
+	<select id="getEventConfig" parameterType="EventConfigModel" resultType="EventConfigModel">
+		SELECT
+			A.insert_time,
+			A.system_seq,
+			A.process_seq,
+			A.process_name,
+			A.event_seq,
+			A.alarm_name,
+			A.severity,
+			A.repeat_count,
+			A.use_flag,
+			A.sms_flag,
+			A.condition_count
+		FROM cm_event_config A
+		WHERE A.alarm_name = #{alarmName} AND A.severity = #{severity}
+	</select>
+
+	<update id="updateEventConfig" parameterType="EventConfigModel">
+		UPDATE cm_event_config
+		SET severity=#{severity}
+		WHERE event_seq=#{eventSeq}
+	</update>
+
+	<select id="getAlarmList" parameterType="EventHistoryParamModel" resultType="EventHistoryModel">
+		SELECT
+			A.ALARM_SEQ,
+			A.ALARM_CODE,
+			A.STATUS,
+			A.ALARM_NAME,
+			A.RESOURCE,
+			A.LOCATION,
+			A.SEVERITY,
+			DATE_FORMAT(A.OCCUR_DATE, '%Y-%m-%d %T') AS OCCUR_DATE,
+			A.OCCUR_USER,
+			A.OCCUR_MESSAGE,
+			DATE_FORMAT(A.RELEASE_DATE, '%Y-%m-%d %T') AS RELEASE_DATE,
+			A.RELEASE_USER,
+			A.RELEASE_MESSAGE,
+			DATE_FORMAT(A.ACK_DATE, '%Y-%m-%d %T') AS ACK_DATE,
+			A.ACK_USER,
+			A.ACK_MESSAGE,
+			DATE_FORMAT(A.DELETE_DATE, '%Y-%m-%d %T') AS DELETE_DATE,
+			A.DELETE_USER,
+			A.DELETE_MESSAGE,
+			DATE_FORMAT(A.STATUS_CHANGE_DATE, '%Y-%m-%d %T') AS STATUS_CHANGE_DATE,
+			A.TIMES,
+			A.DURATION,
+			A.PROCESS_NAME,
+			A.ETC1,
+			A.ETC2
+		FROM fm_event_history A
+		WHERE DATE_FORMAT(A.OCCUR_DATE, '%Y-%m-%d %T') BETWEEN DATE_FORMAT(#{sdate},'%Y-%m-%d %T') AND DATE_FORMAT(#{edate},'%Y-%m-%d %T')
+			<!--<if test="severityList == null or severityList.size() == 0">
+				AND A.SEVERITY != 'CR' AND A.SEVERITY != 'MJ' AND A.SEVERITY != 'MI'
+			</if>-->
+			<if test="severityList != null and severityList.size() > 0">
+				AND A.SEVERITY IN
+				<foreach collection="severityList" item="severity" separator="," open="(" close=")">
+					#{severity}
+				</foreach>
+			</if>
+			<if test="occurMessage != null">
+				AND UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{occurMessage}), '%')
+			</if>
+			<if test="status != null">
+				AND A.STATUS = #{status}
+			</if>
+			<!--<if test="service == null and volume == null and host == null">
+				AND (UCASE(A.ETC2) != UCASE('service') AND UCASE(A.ETC2) != UCASE('volume') AND UCASE(A.ETC2) != UCASE('host'))
+			</if>-->
+			<if test="service != null or volume != null or host != null">
+				AND (1 != 1
+				<if test="service != null">
+					OR UCASE(A.ETC2) = UCASE('service')
+				</if>
+				<if test="volume != null">
+					OR UCASE(A.ETC2) = UCASE('volume')
+				</if>
+				<if test="host != null">
+					OR UCASE(A.ETC2) = UCASE('host')
+				</if>
+				)
+			</if>
+			<if test="serviceName != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{serviceName}), '%') AND UCASE(A.ETC2) = UCASE('service'))
+			</if>
+			<if test="volumeName != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{volumeName}), '%') AND UCASE(A.ETC2) = UCASE('volume'))
+			</if>
+			<if test="hostName != null">
+				AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{hostName}), '%') AND UCASE(A.ETC2) = UCASE('host'))
+			</if>
+			<if test="resource != null">
+				AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{resource}), '%'))
+			</if>
+			<if test="location != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{location}), '%'))
+			</if>
+			<if test="alarmCode == null and alarmCodeList != null and alarmCodeList.size() > 0">
+				AND A.ALARM_CODE IN
+				<foreach collection="alarmCodeList" item="ac" separator="," open="(" close=")">
+					#{ac}
+				</foreach>
+			</if>
+			<if test="alarmCode != null">
+				AND A.ALARM_CODE LIKE CONCAT('%', UCASE(#{alarmCode}), '%')
+			</if>
+			<if test="alarmName != null">
+				AND A.ALARM_NAME LIKE CONCAT('%', UCASE(#{alarmName}), '%')
+			</if>
+			<if test="searchText != null">
+				AND (UCASE(A.ALARM_NAME) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.SEVERITY) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{searchText}), '%'))
+			</if>
+		<if test="orderBy == null">
+			ORDER BY A.OCCUR_DATE DESC
+		</if>
+		<if test="orderBy != null">
+			ORDER BY A.${orderBy} ${orderType}
+		</if>
+		<if test="size != null and size != 0">
+			LIMIT #{size} OFFSET #{offset}
+		</if>
+	</select>
+
+	<select id="getAlarmCount" parameterType="EventHistoryParamModel" resultType="EventHistoryResultModel">
+		SELECT COUNT(*) as COUNT,
+			COUNT(if(SEVERITY='CR', SEVERITY, NULL)) AS CR,
+			COUNT(if(SEVERITY='MJ', SEVERITY, NULL)) AS MJ,
+			COUNT(if(SEVERITY='MI', SEVERITY, NULL)) AS MI
+		FROM fm_event_history A
+		WHERE DATE_FORMAT(A.OCCUR_DATE, '%Y-%m-%d %T') BETWEEN DATE_FORMAT(#{sdate},'%Y-%m-%d %T') AND DATE_FORMAT(#{edate},'%Y-%m-%d %T')
+			<!--<if test="severityList == null or severityList.size() == 0">
+				AND A.SEVERITY != 'CR' AND A.SEVERITY != 'MJ' AND A.SEVERITY != 'MI'
+			</if>-->
+			<if test="severityList != null and severityList.size() > 0">
+				AND A.SEVERITY IN
+				<foreach collection="severityList" item="severity" separator="," open="(" close=")">
+					#{severity}
+				</foreach>
+			</if>
+			<if test="occurMessage != null">
+				AND UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{occurMessage}), '%')
+			</if>
+			<if test="status != null">
+				AND A.STATUS = #{status}
+			</if>
+			<!--<if test="service == null and volume == null and host == null">
+				AND (UCASE(A.ETC2) != UCASE('service') AND UCASE(A.ETC2) != UCASE('volume') AND UCASE(A.ETC2) != UCASE('host'))
+			</if>-->
+			<if test="service != null or volume != null or host != null">
+				AND (1 != 1
+				<if test="service != null">
+					OR UCASE(A.ETC2) = UCASE('service')
+				</if>
+				<if test="volume != null">
+					OR UCASE(A.ETC2) = UCASE('volume')
+				</if>
+				<if test="host != null">
+					OR UCASE(A.ETC2) = UCASE('host')
+				</if>
+				)
+			</if>
+			<if test="serviceName != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{serviceName}), '%') AND UCASE(A.ETC2) = UCASE('service'))
+			</if>
+			<if test="volumeName != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{volumeName}), '%') AND UCASE(A.ETC2) = UCASE('volume'))
+			</if>
+			<if test="hostName != null">
+				AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{hostName}), '%') AND UCASE(A.ETC2) = UCASE('host'))
+			</if>
+			<if test="resource != null">
+				AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{resource}), '%'))
+			</if>
+			<if test="location != null">
+				AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{location}), '%'))
+			</if>
+			<if test="alarmCode == null and alarmCodeList != null and alarmCodeList.size() > 0">
+				AND A.ALARM_CODE IN
+				<foreach collection="alarmCodeList" item="ac" separator="," open="(" close=")">
+					#{ac}
+				</foreach>
+			</if>
+			<if test="alarmCode != null">
+				AND A.ALARM_CODE LIKE CONCAT('%', UCASE(#{alarmCode}), '%')
+			</if>
+			<if test="alarmName != null">
+				AND A.ALARM_NAME LIKE CONCAT('%', UCASE(#{alarmName}), '%')
+			</if>
+			<if test="searchText != null">
+				AND (UCASE(A.ALARM_NAME) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.SEVERITY) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{searchText}), '%'))
+			</if>
+	</select>
+	
+	
+	
+	<select id="getResolvedTime" parameterType="EventHistoryParamModel" resultType="java.lang.String">
+
+			SELECT TIME_FORMAT(SEC_TO_TIME(ROUND
+			<if test="aggregationFunc == 'avg' ">(AVG(TIME_TO_SEC(TIMEDIFF(RELEASE_DATE,OCCUR_DATE))))), "%Hh %im %ss") AS VALUE</if>
+		    <if test="aggregationFunc == 'min' ">(MIN(TIME_TO_SEC(TIMEDIFF(RELEASE_DATE,OCCUR_DATE))))), "%Hh %im %ss") AS VALUE </if>
+	        <if test="aggregationFunc == 'max' ">(MAX(TIME_TO_SEC(TIMEDIFF(RELEASE_DATE,OCCUR_DATE))))), "%Hh %im %ss") AS VALUE </if>
+			FROM fm_event_history A
+			WHERE RELEASE_DATE IS NOT NULL
+				AND DATE_FORMAT(A.OCCUR_DATE, '%Y-%m-%d %T') BETWEEN DATE_FORMAT(#{sdate},'%Y-%m-%d %T') AND DATE_FORMAT(#{edate},'%Y-%m-%d %T')
+				<!--<if test="severityList == null or severityList.size() == 0">
+				AND A.SEVERITY != 'CR' AND A.SEVERITY != 'MJ' AND A.SEVERITY != 'MI'
+				</if>-->
+				<if test="severityList != null and severityList.size() > 0">
+					AND A.SEVERITY IN
+					<foreach collection="severityList" item="severity" separator="," open="(" close=")">
+						#{severity}
+					</foreach>
+				</if>
+				<if test="occurMessage != null">
+					AND UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{occurMessage}), '%')
+				</if>
+				<if test="status != null">
+					AND A.STATUS = #{status}
+				</if>
+				<!--<if test="service == null and volume == null and host == null">
+					AND (UCASE(A.ETC2) != UCASE('service') AND UCASE(A.ETC2) != UCASE('volume') AND UCASE(A.ETC2) != UCASE('host'))
+				</if>-->
+				<if test="service != null or volume != null or host != null">
+					AND (1 != 1
+					<if test="service != null">
+						OR UCASE(A.ETC2) = UCASE('service')
+					</if>
+					<if test="volume != null">
+						OR UCASE(A.ETC2) = UCASE('volume')
+					</if>
+					<if test="host != null">
+						OR UCASE(A.ETC2) = UCASE('host')
+					</if>
+					)
+				</if>
+				<if test="serviceName != null">
+					AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{serviceName}), '%') AND UCASE(A.ETC2) = UCASE('service'))
+				</if>
+				<if test="volumeName != null">
+					AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{volumeName}), '%') AND UCASE(A.ETC2) = UCASE('volume'))
+				</if>
+				<if test="hostName != null">
+					AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{hostName}), '%') AND UCASE(A.ETC2) = UCASE('host'))
+				</if>
+				<if test="resource != null">
+					AND (UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{resource}), '%'))
+				</if>
+				<if test="location != null">
+					AND (UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{location}), '%'))
+				</if>
+				<if test="alarmCode == null and alarmCodeList != null and alarmCodeList.size() > 0">
+					AND A.ALARM_CODE IN
+					<foreach collection="alarmCodeList" item="ac" separator="," open="(" close=")">
+						#{ac}
+					</foreach>
+				</if>
+				<if test="alarmCode != null">
+					AND A.ALARM_CODE LIKE CONCAT('%', UCASE(#{alarmCode}), '%')
+				</if>
+				<if test="alarmName != null">
+					AND A.ALARM_NAME LIKE CONCAT('%', UCASE(#{alarmName}), '%')
+				</if>
+				<if test="searchText != null">
+					AND (UCASE(A.ALARM_NAME) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.RESOURCE) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.LOCATION) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.SEVERITY) LIKE CONCAT('%', UCASE(#{searchText}), '%') OR UCASE(A.OCCUR_MESSAGE) LIKE CONCAT('%', UCASE(#{searchText}), '%'))
+				</if>
+	</select>
+
+</mapper>
+
